@@ -22,6 +22,7 @@ class SausageDog extends Animal {
       mouseY < this.y + this.image.height / 2
     ) {
       this.found = true;
+      state = `foundDog`;
     }
   }
 }
