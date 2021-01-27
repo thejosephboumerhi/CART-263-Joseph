@@ -101,7 +101,7 @@ function title() {
   stroke(0);
   strokeWeight(5);
   textAlign(CENTER, CENTER);
-  text(`Where's The Sausage Dog+`, width / 2, height / 2);
+  text(`Where's The Sausage Dog: New Game+`, width / 2, height / 2);
   pop();
 }
 
