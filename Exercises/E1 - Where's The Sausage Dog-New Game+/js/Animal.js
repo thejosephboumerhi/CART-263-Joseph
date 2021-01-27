@@ -1,3 +1,4 @@
+//Parent class for the animals
 class Animal {
   constructor(x, y, image) {
     this.x = x;

@@ -16,6 +16,8 @@ let animals = [];
 let sausageDogImage = undefined;
 let sausageDog = undefined;
 
+//Preloads images, all with the same name could randomly be taken and used on
+//a given animal (animal(0-9).png)
 function preload() {
   for (let i = 0; i < NUM_ANIMAL_IMAGES; i++) {
     let animalImage = loadImage(`assets/images/animal${i}.png`);
@@ -25,6 +27,7 @@ function preload() {
   sausageDogImage = loadImage(`assets/images/sausage-dog.png`);
 }
 
+//Same old setup from Activity, randomly places all animals, and the one dog
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
@@ -41,6 +44,7 @@ function setup() {
   sausageDog = new SausageDog(x, y, sausageDogImage);
 }
 
+//Various click states, and the gameplay being dogPlaytime()
 function draw() {
   if (state === `title`) {
     background(230, 100, 100);
@@ -60,12 +64,14 @@ function draw() {
 }
 
 function countdown() {
+  //Timer using frameCount, 1800 is for 30 seconds, lose when reached
   let timer = int(frameCount / 60);
   let loseTime = 1800;
   if (frameCount > loseTime) {
     state = `lostDog`;
   }
 
+  //Text in top-center showing the time
   push();
   textSize(30);
   fill(200);
@@ -76,6 +82,7 @@ function countdown() {
   pop();
 }
 
+//Could be used for reset?
 function restartAnimalArray() {
   for (let i = 0; i < NUM_ANIMAL; i++) {
     let x = random(0, width);
@@ -86,6 +93,7 @@ function restartAnimalArray() {
   }
 }
 
+//Displays the animals
 function dogPlaytime() {
   for (let i = 0; i < animals.length; i++) {
     animals[i].update();
@@ -94,6 +102,7 @@ function dogPlaytime() {
   sausageDog.update();
 }
 
+//Title screen text
 function title() {
   push();
   textSize(30);
@@ -105,6 +114,7 @@ function title() {
   pop();
 }
 
+//Text if you cannot find the dog in time
 function endScreen() {
   push();
   textSize(30);
@@ -116,6 +126,7 @@ function endScreen() {
   pop();
 }
 
+//Text for when you click the dog in time
 function winScreen() {
   push();
   textSize(30);
@@ -127,6 +138,7 @@ function winScreen() {
   pop();
 }
 
+//Lets user click through states, and click on the dog
 function mousePressed() {
   if (state === `title`) {
     state = `playTime`;
@@ -135,12 +147,12 @@ function mousePressed() {
   } else if (state === `foundDog`) {
     state = `title`;
     sausageDog.found = false;
-
+    animalImages = [];
     animals = [];
   } else if (state === `lostDog`) {
     state = `title`;
     sausageDog.found = false;
-
+    animalImages = [];
     animals = [];
   }
 }
