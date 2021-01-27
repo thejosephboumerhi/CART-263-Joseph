@@ -135,12 +135,12 @@ function mousePressed() {
   } else if (state === `foundDog`) {
     state = `title`;
     sausageDog.found = false;
-    animalImages = [];
+
     animals = [];
   } else if (state === `lostDog`) {
     state = `title`;
     sausageDog.found = false;
-    animalImages = [];
+
     animals = [];
   }
 }
