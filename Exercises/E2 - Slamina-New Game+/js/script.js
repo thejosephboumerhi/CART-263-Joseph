@@ -1,5 +1,5 @@
 /**************************************************
-A2 - Slamina
+E2 - Slamina +New Game
 Joseph Boumerhi
 
 Here is a description of this template p5 project.
@@ -7,11 +7,6 @@ Here is a description of this template p5 project.
 "use strict";
 
 let state = `title`;
-
-let timeLimit = 0;
-let timeFailure = false;
-
-let score = 0;
 
 const animals = [
   "aardvark",
@@ -152,22 +147,13 @@ const animals = [
 
 let currentAnimal = ``;
 let currentAnswer = ``;
+let wrongFailure = 0;
+let correctWin = 0;
+let score = correctWin;
+let errors = wrongFailure;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-
-  if (annyang) {
-    let commands = {
-      "I think it is *animal": guessAnimal,
-    };
-
-    annyang.addCommands(commands);
-    annyang.start();
-
-    textSize(32);
-    textStyle(BOLD);
-    textAlign(CENTER, CENTER);
-  }
 }
 
 function draw() {
@@ -179,9 +165,10 @@ function draw() {
     frameCount = 0;
   } else if (state === `questionnaire`) {
     background(0, 163, 84);
+    voiceReg();
     countdown();
     quizTime();
-    guessAnimal(animal);
+    succeedOrFail();
   } else if (state === `wonQuiz`) {
     background(255);
     winScreen();
@@ -211,7 +198,7 @@ function endScreen() {
   stroke(0);
   strokeWeight(5);
   textAlign(CENTER, CENTER);
-  text(`You were incorrect too much`, width / 2, height / 2);
+  text(`You lost!`, width / 2, height / 2);
   pop();
 }
 
@@ -223,23 +210,48 @@ function winScreen() {
   stroke(0);
   strokeWeight(5);
   textAlign(CENTER, CENTER);
-  text(`You were correct`, width / 2, height / 2);
+  text(`You were correct enough times`, width / 2, height / 2);
   pop();
 }
 
 function quizTime() {
   if (currentAnswer === currentAnimal) {
     fill(0, 255, 0);
+    correctWin + 1;
   } else {
     fill(255, 0, 0);
+    wrongFailure + 1;
   }
   text(currentAnswer, width / 2, height / 2);
 }
 
+function voiceReg() {
+  if (annyang) {
+    let commands = {
+      "I think it is *animal": guessAnimal,
+    };
+
+    annyang.addCommands(commands);
+    annyang.start();
+
+    textSize(32);
+    textStyle(BOLD);
+    textAlign(CENTER, CENTER);
+  }
+}
+
+function succeedOrFail() {
+  if (correctWin >= 4) {
+    state = `wonQuiz`;
+  } else if (wrongFailure >= 3) {
+    state = `lostQuiz`;
+  }
+}
+
 function countdown() {
-  //Timer using frameCount, 1800 is for 30 seconds, lose when reached
+  //Timer using frameCount, 1500 is for 25 seconds, lose when reached
   let timer = int(frameCount / 60);
-  let loseTime = 1800;
+  let loseTime = 1500;
   if (frameCount > loseTime) {
     state = `lostQuiz`;
   }
@@ -267,23 +279,23 @@ function mousePressed() {
   } else if (state === `lostQuiz`) {
     state = `title`;
   }
+}
 
-  function guessAnimal(animal) {
-    currentAnswer = animal.toLowerCase();
-    console.log(currentAnswer);
-  }
+function guessAnimal(animal) {
+  currentAnswer = animal.toLowerCase();
+  console.log(currentAnswer);
+}
 
-  /**
+/**
 Reverses the provided string
 */
-  function reverseString(string) {
-    // Split the string into an array of characters
-    let characters = string.split("");
-    // Reverse the array of characters
-    let reverseCharacters = characters.reverse();
-    // Join the array of characters back into a string
-    let result = reverseCharacters.join("");
-    // Return the result
-    return result;
-  }
+function reverseString(string) {
+  // Split the string into an array of characters
+  let characters = string.split("");
+  // Reverse the array of characters
+  let reverseCharacters = characters.reverse();
+  // Join the array of characters back into a string
+  let result = reverseCharacters.join("");
+  // Return the result
+  return result;
 }
