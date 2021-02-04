@@ -149,11 +149,22 @@ let currentAnimal = ``;
 let currentAnswer = ``;
 let wrongFailure = 0;
 let correctWin = 0;
-let score = correctWin;
-let errors = wrongFailure;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+
+  if (annyang) {
+    let commands = {
+      "I think it is *animal": guessAnimal,
+    };
+
+    annyang.addCommands(commands);
+    annyang.start();
+
+    textSize(32);
+    textStyle(BOLD);
+    textAlign(CENTER, CENTER);
+  }
 }
 
 function draw() {
@@ -165,7 +176,6 @@ function draw() {
     frameCount = 0;
   } else if (state === `questionnaire`) {
     background(0, 163, 84);
-    voiceReg();
     countdown();
     quizTime();
     succeedOrFail();
@@ -217,32 +227,14 @@ function winScreen() {
 function quizTime() {
   if (currentAnswer === currentAnimal) {
     fill(0, 255, 0);
-    correctWin + 1;
-    frameCount - 240;
   } else {
     fill(255, 0, 0);
-    wrongFailure + 1;
   }
   text(currentAnswer, width / 2, height / 2);
 }
 
-function voiceReg() {
-  if (annyang) {
-    let commands = {
-      "I think it is *animal": guessAnimal,
-    };
-
-    annyang.addCommands(commands);
-    annyang.start();
-
-    textSize(32);
-    textStyle(BOLD);
-    textAlign(CENTER, CENTER);
-  }
-}
-
 function succeedOrFail() {
-  if (correctWin >= 4) {
+  if (correctWin >= 3) {
     state = `wonQuiz`;
   } else if (wrongFailure >= 3) {
     state = `lostQuiz`;
@@ -250,9 +242,9 @@ function succeedOrFail() {
 }
 
 function countdown() {
-  //Timer using frameCount, 1500 is for 25 seconds, lose when reached
+  //Timer using frameCount, 2700 is for 45 seconds, lose when reached
   let timer = int(frameCount / 60);
-  let loseTime = 1500;
+  let loseTime = 2700;
   if (frameCount > loseTime) {
     state = `lostQuiz`;
   }
@@ -284,7 +276,14 @@ function mousePressed() {
 
 function guessAnimal(animal) {
   currentAnswer = animal.toLowerCase();
-  console.log(currentAnswer);
+  console.log(currentAnswer, currentAnimal);
+  if (currentAnswer === currentAnimal) {
+    correctWin += 1;
+    console.log(correctWin);
+  } else {
+    wrongFailure += 1;
+    console.log(wrongFailure);
+  }
 }
 
 /**
