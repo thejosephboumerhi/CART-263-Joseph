@@ -154,7 +154,6 @@ let errors = wrongFailure;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  voiceReg();
 }
 
 function draw() {
@@ -166,6 +165,7 @@ function draw() {
     frameCount = 0;
   } else if (state === `questionnaire`) {
     background(0, 163, 84);
+    voiceReg();
     countdown();
     quizTime();
     succeedOrFail();
