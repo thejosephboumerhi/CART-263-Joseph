@@ -20,9 +20,10 @@ let predictions = [];
 
 let bubble = undefined;
 let poisonBubble = undefined;
+let healingBubble = undefined;
 
-let lives = 3;
-let bubblePoints = 6;
+let lives = 2;
+let bubblePoints = 0;
 
 function setup() {
   createCanvas(800, 600);
@@ -56,6 +57,14 @@ function setup() {
     vx: 0,
     vy: -1,
   };
+
+  healingBubble = {
+    x: random(width),
+    y: height,
+    size: 40,
+    vx: 0,
+    vy: -10,
+  };
 }
 
 /**
@@ -71,6 +80,7 @@ function draw() {
     bubbleDisplay();
     bubbleMovement();
     playerCounter();
+    conclusionConditions();
   } else if (state === `poppinChampion`) {
     background(255);
     winScreen();
@@ -105,22 +115,33 @@ function mLfingerPopper() {
     pop();
 
     //Bubble hit registration
-    //Detection for blue bubble
+    //Detection for blue bubble, points
     let d = dist(tipX, tipY, bubble.x, bubble.y);
     if (d < bubble.size / 2) {
       bubble.x = random(width);
       bubble.y = height;
+      bubblePoints += 1;
     }
 
-    //Detection for purple bubble
+    //Detection for purple bubble, damages
     let toxic = dist(tipX, tipY, poisonBubble.x, poisonBubble.y);
     if (toxic < poisonBubble.size / 2) {
       poisonBubble.x = random(width);
       poisonBubble.y = height;
+      lives -= 1;
+    }
+
+    //Detection for lime-green bubble, heals
+    let heal = dist(tipX, tipY, healingBubble.x, healingBubble.y);
+    if (heal < healingBubble.size / 2) {
+      healingBubble.x = random(width);
+      healingBubble.y = height;
+      lives += 1;
     }
   }
 }
 
+//
 function bubbleDisplay() {
   push();
   fill(0, 100, 200);
@@ -132,6 +153,12 @@ function bubbleDisplay() {
   fill(197, 26, 219);
   noStroke();
   ellipse(poisonBubble.x, poisonBubble.y, poisonBubble.size);
+  pop();
+
+  push();
+  fill(0, 230, 11);
+  noStroke();
+  ellipse(healingBubble.x, healingBubble.y, healingBubble.size);
   pop();
 }
 
@@ -151,6 +178,26 @@ function bubbleMovement() {
     poisonBubble.x = random(width);
     poisonBubble.y = height;
   }
+
+  healingBubble.x += healingBubble.vx;
+  healingBubble.y += healingBubble.vy;
+
+  if (healingBubble.y < 0) {
+    healingBubble.x = random(width);
+    healingBubble.y = height;
+  }
+}
+
+//
+function conclusionConditions() {
+  //
+  if (bubblePoints >= 6) {
+    state = `poppinChampion`;
+  }
+  //
+  if (lives <= 0) {
+    state = `bubblePoppinBaby`;
+  }
 }
 
 //Title screen text
@@ -168,6 +215,7 @@ function title() {
   pop();
 }
 
+//Text that displays counters for lifes and points
 function playerCounter() {
   push();
   textSize(30);
@@ -200,7 +248,7 @@ function winScreen() {
   stroke(0);
   strokeWeight(5);
   textAlign(CENTER, CENTER);
-  text(`You popped bubbles for long enough`, width / 2, height / 2);
+  text(`You popped enough bubbles`, width / 2, height / 2);
   pop();
 }
 
@@ -208,9 +256,12 @@ function winScreen() {
 function mousePressed() {
   if (state === `title`) {
     state = `bubblePoppin`;
-  } else if (state === `poppinChampion`) {
+  } else if (state === `poppinChampion` || `bubblePoppinBaby`) {
     state = `title`;
-  } else if (state === `bubblePoppinBaby`) {
-    state = `title`;
+    lives = 3;
+    bubblePoints = 0;
+    //} else if (state === `bubblePoppinBaby`) {
+    //state = `title`;
+    //}
   }
 }
