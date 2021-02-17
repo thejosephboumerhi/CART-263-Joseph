@@ -298,8 +298,5 @@ function mousePressed() {
     state = `title`;
     lives = 3;
     bubblePoints = 0;
-    //} else if (state === `bubblePoppinBaby`) {
-    //state = `title`;
-    //}
   }
 }
