@@ -26,7 +26,7 @@ let lives = 2;
 let bubblePoints = 0;
 
 function setup() {
-  createCanvas(800, 600);
+  createCanvas(640, 480);
 
   //Access user's webcam
   video = createCapture(VIDEO);
@@ -74,6 +74,10 @@ function draw() {
   if (state === `title`) {
     background(0, 2, 97);
     title();
+    frameCount = 0;
+  } else if (state === `loading`) {
+    background(0, 146, 214);
+    unsureIfthisIsAnActualLoadingScreen();
   } else if (state === `bubblePoppin`) {
     background(3, 1, 105);
     mLfingerPopper();
@@ -82,10 +86,10 @@ function draw() {
     playerCounter();
     conclusionConditions();
   } else if (state === `poppinChampion`) {
-    background(255);
+    background(189, 189, 189);
     winScreen();
   } else if (state === `bubblePoppinBaby`) {
-    background(0);
+    background(36, 36, 36);
     endScreen();
   }
 }
@@ -215,6 +219,22 @@ function title() {
   pop();
 }
 
+function unsureIfthisIsAnActualLoadingScreen() {
+  let wasteOfTime = 120;
+  if (frameCount > wasteOfTime) {
+    state = `bubblePoppin`;
+  }
+
+  push();
+  textSize(30);
+  fill(255, 132, 0);
+  stroke(0);
+  strokeWeight(5);
+  textAlign(CENTER, CENTER);
+  text(`Loading...`, width / 2, height / 2);
+  pop();
+}
+
 //Text that displays counters for lifes and points
 function playerCounter() {
   push();
@@ -223,8 +243,8 @@ function playerCounter() {
   stroke(0);
   strokeWeight(5);
   textAlign(LEFT, BOTTOM);
-  text(`Lives: ${lives}`, width / 20, 550);
-  text(`Bubbles Popped: ${bubblePoints}`, width / 20, 575);
+  text(`Lives: ${lives}`, width / 20, 440);
+  text(`Bubbles Popped: ${bubblePoints}`, width / 20, 460);
   pop();
 }
 
@@ -255,7 +275,7 @@ function winScreen() {
 //Usual mouse press
 function mousePressed() {
   if (state === `title`) {
-    state = `bubblePoppin`;
+    state = `loading`;
   } else if (state === `poppinChampion` || `bubblePoppinBaby`) {
     state = `title`;
     lives = 3;
