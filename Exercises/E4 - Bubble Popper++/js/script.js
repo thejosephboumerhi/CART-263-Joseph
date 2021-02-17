@@ -13,18 +13,23 @@ Blues give points
 Green gives lifes
 Purple hurts`;
 
+//Variable for the webcam
 let video = undefined;
 
+//Variables for the machine learning finger
 let handpose = undefined;
 let predictions = [];
 
+//Variables for the bubbles
 let bubble = undefined;
 let poisonBubble = undefined;
 let healingBubble = undefined;
 
+//Variables for the counters for player, lives and points
 let lives = 2;
 let bubblePoints = 0;
 
+//Setups canvas, starts up the camera and ML model and predictions
 function setup() {
   createCanvas(640, 480);
 
@@ -42,6 +47,8 @@ function setup() {
     predictions = results;
   });
 
+  //All the bubbles, have different sizes and speeds, could've been in classes,
+  //for the sake of this exercise, I'll leave it like this
   bubble = {
     x: random(width),
     y: height,
@@ -67,9 +74,8 @@ function setup() {
   };
 }
 
-/**
-Description of draw()
-*/
+//The different states, the title, loading, the game, and the ends,
+//with all their associated functions
 function draw() {
   if (state === `title`) {
     background(0, 2, 97);
@@ -94,7 +100,9 @@ function draw() {
   }
 }
 
+//The machine learning finger, its display, and its bubble hit registration
 function mLfingerPopper() {
+  //Determines where and how you are pointing your index finger
   if (predictions.length > 0) {
     let hand = predictions[0];
     let index = hand.annotations.indexFinger;
@@ -105,6 +113,7 @@ function mLfingerPopper() {
     let baseX = base[0];
     let baseY = base[1];
 
+    //Base of the index finger
     push();
     noFill();
     stroke(255, 255, 255);
@@ -112,6 +121,7 @@ function mLfingerPopper() {
     line(baseX, baseY, tipX, tipY);
     pop();
 
+    //Pointing finger
     push();
     noStroke();
     fill(255, 0, 0);
@@ -145,20 +155,23 @@ function mLfingerPopper() {
   }
 }
 
-//
+//Displays the bubbles, with their own unique colors
 function bubbleDisplay() {
+  //Blue, bubbly bubble
   push();
   fill(0, 100, 200);
   noStroke();
   ellipse(bubble.x, bubble.y, bubble.size);
   pop();
 
+  //Purple, poisonous bubble
   push();
   fill(197, 26, 219);
   noStroke();
   ellipse(poisonBubble.x, poisonBubble.y, poisonBubble.size);
   pop();
 
+  //Lime-green, revitalizing bubble
   push();
   fill(0, 230, 11);
   noStroke();
@@ -166,6 +179,7 @@ function bubbleDisplay() {
   pop();
 }
 
+//All their same movement
 function bubbleMovement() {
   bubble.x += bubble.vx;
   bubble.y += bubble.vy;
@@ -192,19 +206,19 @@ function bubbleMovement() {
   }
 }
 
-//
+//Determines whether you win or lose based on the values
 function conclusionConditions() {
-  //
+  //If you score 6 points, you win
   if (bubblePoints >= 6) {
     state = `poppinChampion`;
   }
-  //
+  //If your lives reaches 0, game over
   if (lives <= 0) {
     state = `bubblePoppinBaby`;
   }
 }
 
-//Title screen text
+//Title screen text, with the instructions
 function title() {
   push();
   textSize(30);
@@ -219,12 +233,16 @@ function title() {
   pop();
 }
 
+//Displays "Loading..." text, unsure if it's a actual loading screen, hence
+//the jokingly long function name
 function unsureIfthisIsAnActualLoadingScreen() {
+  //FrameCount on the loading state to "waste" your time
   let wasteOfTime = 120;
   if (frameCount > wasteOfTime) {
     state = `bubblePoppin`;
   }
 
+  //The text
   push();
   textSize(30);
   fill(255, 132, 0);
@@ -272,7 +290,7 @@ function winScreen() {
   pop();
 }
 
-//Usual mouse press
+//Usual mouse press for loading and restarting after finishing
 function mousePressed() {
   if (state === `title`) {
     state = `loading`;
