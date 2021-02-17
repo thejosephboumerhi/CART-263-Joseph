@@ -19,6 +19,8 @@ let bubble = undefined;
 
 let poisonBubble = undefined;
 
+let lives = 3;
+
 function setup() {
   createCanvas(640, 480);
 
@@ -41,13 +43,13 @@ function setup() {
     y: height,
     size: 100,
     vx: 0,
-    vy: -1,
+    vy: -2,
   };
 
   poisonBubble = {
     x: random(width),
     y: height,
-    size: 100,
+    size: 75,
     vx: 0,
     vy: -1,
   };
@@ -63,6 +65,9 @@ function draw() {
   } else if (state === `bubblePoppin`) {
     background(0, 163, 84);
     mLfingerPopper();
+    bubbleDisplay();
+    bubbleMovement();
+    bubbleRegistration();
   } else if (state === `poppinChampion`) {
     background(255);
     winScreen();
@@ -94,14 +99,24 @@ function mLfingerPopper() {
     fill(255, 0, 0);
     ellipse(baseX, baseY, 20);
     pop();
-
-    let d = dist(tipX, tipY, bubble.x, bubble.y);
-    if (d < bubble.size / 2) {
-      bubble.x = random(width);
-      bubble.y = height;
-    }
   }
+}
 
+function bubbleDisplay() {
+  push();
+  fill(0, 100, 200);
+  noStroke();
+  ellipse(bubble.x, bubble.y, bubble.size);
+  pop();
+
+  push();
+  fill(197, 26, 219);
+  noStroke();
+  ellipse(poisonBubble.x, poisonBubble.y, poisonBubble.size);
+  pop();
+}
+
+function bubbleMovement() {
   bubble.x += bubble.vx;
   bubble.y += bubble.vy;
 
@@ -110,11 +125,13 @@ function mLfingerPopper() {
     bubble.y = height;
   }
 
-  push();
-  fill(0, 100, 200);
-  noStroke();
-  ellipse(bubble.x, bubble.y, bubble.size);
-  pop();
+  poisonBubble.x += poisonBubble.vx;
+  poisonBubble.y += poisonBubble.vy;
+
+  if (poisonBubble.y < 0) {
+    poisonBubble.x = random(width);
+    poisonBubble.y = height;
+  }
 }
 
 function bubbleRegistration() {
@@ -124,53 +141,56 @@ function bubbleRegistration() {
     bubble.y = height;
   }
 
-  //Title screen text
-  function title() {
-    push();
-    textSize(30);
-    fill(0, 208, 212);
-    stroke(0);
-    strokeWeight(5);
-    textAlign(CENTER, CENTER);
-    text(`Bubble Popper++`, width / 2, height / 2);
-    pop();
+  let toxic = dist(tipX, tipY, poisonBubble.x, poisonBubble.y);
+  if (toxic < poisonBubble.size / 2) {
+    poisonBubble.x = random(width);
+    poisonBubble.y = height;
   }
+}
 
-  //Text if you cannot find the dog in time
-  function endScreen() {
-    push();
-    textSize(30);
-    fill(255, 0, 0);
-    stroke(0);
-    strokeWeight(5);
-    textAlign(CENTER, CENTER);
-    text(`You intoxicated yourself!`, width / 2, height / 2);
-    pop();
-  }
+//Title screen text
+function title() {
+  push();
+  textSize(30);
+  fill(0, 208, 212);
+  stroke(0);
+  strokeWeight(5);
+  textAlign(CENTER, CENTER);
+  text(`Bubble Popper++`, width / 2, height / 2);
+  pop();
+}
 
-  //Text for when you click the dog in time
-  function winScreen() {
-    push();
-    textSize(30);
-    fill(235, 216, 52);
-    stroke(0);
-    strokeWeight(5);
-    textAlign(CENTER, CENTER);
-    text(`You popped bubbles for long enough`, width / 2, height / 2);
-    pop();
-  }
+//Text if you pop the wrong bubble
+function endScreen() {
+  push();
+  textSize(30);
+  fill(197, 26, 219);
+  stroke(0);
+  strokeWeight(5);
+  textAlign(CENTER, CENTER);
+  text(`You intoxicated yourself!`, width / 2, height / 2);
+  pop();
+}
 
-  function mousePressed() {
-    if (state === `title`) {
-      state = `questionnaire`;
-    } else if (state === `questionnaire`) {
-      currentAnimal = random(animals);
-      let reverseAnimal = reverseString(currentAnimal);
-      responsiveVoice.speak(reverseAnimal);
-    } else if (state === `wonQuiz`) {
-      state = `title`;
-    } else if (state === `lostQuiz`) {
-      state = `title`;
-    }
+//Text for when you pop enough blue bubbles
+function winScreen() {
+  push();
+  textSize(30);
+  fill(235, 216, 52);
+  stroke(0);
+  strokeWeight(5);
+  textAlign(CENTER, CENTER);
+  text(`You popped bubbles for long enough`, width / 2, height / 2);
+  pop();
+}
+
+//Usual mouse press
+function mousePressed() {
+  if (state === `title`) {
+    state = `bubblePoppin`;
+  } else if (state === `poppinChampion`) {
+    state = `title`;
+  } else if (state === `bubblePoppinBaby`) {
+    state = `title`;
   }
 }
