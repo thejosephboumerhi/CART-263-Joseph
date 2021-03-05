@@ -1,32 +1,42 @@
 "use strict";
 
 /**
-Title of Project
-Author Name
+P1: Night at the Movies
+Joseph Boumerhi
 
-This is a template. You must fill in the title,
-author, and this description to match your project!
+A game of the movie ""
 */
+
+let state = `title`;
+let player;
+
+let fontTitle;
 
 /**
 Description of preload
 */
-function preload() {
+//function preload() {
 
-}
-
+//}
 
 /**
 Description of setup
 */
 function setup() {
-
+  createCanvas(windowWidth, windowHeight);
 }
-
 
 /**
 Description of draw()
 */
 function draw() {
-
+  if (state === `title`) {
+    background(0);
+  } else if (state === `howToPlay`) {
+    background(0);
+  } else if (state === `inGame`) {
+    background(0);
+  } else if (state === `endGame`) {
+    background(0);
+  }
 }
