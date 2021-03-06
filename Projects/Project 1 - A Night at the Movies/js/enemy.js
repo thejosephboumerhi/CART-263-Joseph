@@ -1,4 +1,4 @@
-class Player {
+class Enemy {
   constructor(x, y) {
     this.x = 0;
     this.y = 0;
@@ -9,11 +9,6 @@ class Player {
     this.ay = 0;
     this.accel = 3;
     this.MaxV = 9;
-    this.friction = 0.9;
-    this.healthPercent = 100;
-    this.invinciTime = 0;
-    this.dashTime = 0;
-    this.triggerSpeed = 0;
 
     //For oscillation
     this.oscillator = new p5.Oscillator();
@@ -27,24 +22,23 @@ class Player {
     this.synth = new p5.PolySynth();
   }
 
-  movementInput() {
-    //Reusing good old movement inputs, since I find it's been fairly effective
-    if (keyIsDown(65)) {
-      this.ax = -this.accel;
-    } else if (keyIsDown(68)) {
+  //
+  huntPlayer() {
+    let cx = this.x - player.x;
+    let cy = this.y - player.y;
+
+    if (cx < 0) {
       this.ax = this.accel;
-    } else {
-      this.ax = 0;
-    }
-    if (keyIsDown(87)) {
-      this.ay = -this.accel;
-    } else if (keyIsDown(83)) {
-      this.ay = this.accel;
-    } else {
-      this.ay = 0;
+    } else if (cx > 0) {
+      this.ax = -this.accel;
     }
 
-    //Allows for smoother WASD movement.
+    if (cy < 0) {
+      this.ay = this.accel;
+    } else if (cy > 0) {
+      this.ay = -this.accel;
+    }
+
     this.vx = this.vx * this.friction;
     this.vy = this.vy * this.friction;
 
@@ -57,7 +51,7 @@ class Player {
     this.vy = constrain(this.vy, -this.MaxV, this.MaxV);
   }
 
-  displayPlayer() {}
+  displayEnemy() {}
 
-  playerSound() {}
+  enemySound() {}
 }
