@@ -24,7 +24,18 @@ let instructions = `[WASD] to move around`;
 Description of preload
 */
 //function preload() {
+////All fonts from daFont
+//https://www.dafont.com/code.font
+//fontTitle = loadFont("assets/fonts/CODE Bold.ttf");
+//helpFont = loadFont("assets/fonts/ka1.ttf");
+//https://www.dafont.com/vcr-osd-mono.font
+//inGameFont =  loadFont("assets/fonts/VCR_OSD_MONO_1.001.ttf");
+//https://www.dafont.com/no-safety-zone.font
+//endGoodFont = loadFont("assets/fonts");
+//https://www.dafont.com/blood-lust.font
+//endBadFont = loadFont("assets/fonts/");
 
+//For the sprites
 //}
 
 /**
@@ -49,6 +60,7 @@ function draw() {
     howToPlay();
   } else if (state === `inGame`) {
     background(0);
+    //gameplay();
   } else if (state === `winGame`) {
     background(0);
     gameWin();
@@ -99,7 +111,7 @@ function draw() {
     stroke(0);
     strokeWeight(5);
     textAlign(CENTER, CENTER);
-    text(`You Died`, width / 2, height / 2);
+    text(`You Win`, width / 2, height / 2);
     pop();
   }
 
