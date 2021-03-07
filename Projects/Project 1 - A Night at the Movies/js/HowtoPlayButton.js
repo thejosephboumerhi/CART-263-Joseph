@@ -16,7 +16,7 @@ class HowToPlayButton extends Buttons {
     fill(200, 50, 50);
     rect(this.x, this.y, this.w, this.h);
     textAlign(CENTER, CENTER);
-    textSize(25);
+    textSize(40);
     textFont(this.font);
     fill(0);
     stroke(0);

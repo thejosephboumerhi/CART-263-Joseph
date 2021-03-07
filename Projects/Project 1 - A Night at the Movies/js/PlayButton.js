@@ -16,7 +16,7 @@ class PlayButton extends Buttons {
     fill(200, 200, 0);
     rect(this.x, this.y, this.w, this.h);
     textAlign(CENTER, CENTER);
-    textSize(30);
+    textSize(50);
     textFont(this.font);
     fill(0);
     stroke(0);

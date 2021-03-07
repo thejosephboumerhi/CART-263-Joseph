@@ -8,8 +8,8 @@ class Player {
     this.vy = 0;
     this.ax = 0;
     this.ay = 0;
-    this.accel = 3;
-    this.MaxV = 9;
+    this.accel = 2;
+    this.MaxV = 4;
     this.friction = 0.9;
     this.healthPercent = 100;
     this.invinciTime = 0;
@@ -155,6 +155,8 @@ class Player {
     projectile.speed;
     projectileOut.push(projectile);
   }
+
+  //playerSound(){}
 
   //Usual border block, simulates an arena
   border() {

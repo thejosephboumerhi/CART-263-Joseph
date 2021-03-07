@@ -3,8 +3,8 @@ Project 1: A Night at the Movies
 Joseph Boumerhi
 
 I based this game off "Rambo: Last Blood", reused
-"Neo-Tenebris" from last semester, gave it a new coating of paint,
-with the addition of new things
+"Neo-Tenebris" from last semester, gave it a new coat of paint,
+with the addition of new things, and some removals to fit a different feel
 **************************************************/
 `use strict`;
 //Starting state, the main menu
@@ -14,9 +14,10 @@ let state = `title`;
 let player;
 
 //Font Variables
-let startEndFont;
+let titleFont;
 let buttonFont;
 let howToPlayFont;
+let deathFont;
 
 //Instructions for htp() function
 let instructions = `Press [WASD] to move around
@@ -39,6 +40,8 @@ let enemyProjectileShot = 1;
 
 //Images for the game, made by me using Piskel, an online pixel editor
 let posterThumbnail;
+
+//Images/Pixel for characters
 let playerImg;
 let playerRunImg;
 let cursorImg;
@@ -53,14 +56,17 @@ let enemyShotImg;
 //Preloads assets
 function preload() {
   //All fonts from daFont
+  //Switched to different fonts to fit movie visuals/theme
   //www.dafont.com/no-safety-zone.font
-  https: startEndFont = loadFont("assets/fonts/NoSafetyZone.ttf");
+  titleFont = loadFont("assets/fonts/NoSafetyZone.ttf");
   //https://www.dafont.com/dirtybag.font
   buttonFont = loadFont("assets/fonts/DIRTYBAG.ttf");
-  //https://www.dafont.com/vcr-osd-mono.font
+  //https://www.dafont.com/lt-emphasis.font
   howToPlayFont = loadFont("assets/fonts/LTEmphasis.ttf");
   //https://www.dafont.com/blood-lust.font
+  deathFont = loadFont("assets/fonts/BloodLust.ttf");
 
+  //Image used for the movie, and for the title screen
   posterThumbnail = loadImage("assets/images/RamboLastBloodMovieThumbnail.jpg");
 
   //Pixel Sprites
@@ -90,7 +96,7 @@ function setup() {
     let enemy = new HybridEnemy(x, y);
     enemyGroup.push(enemy);
   }
-  //Setups the buttons once, to save resources (Dana I think told me this)
+  //Setups the buttons once, to save resources
   button = new Buttons();
   play = new PlayButton();
   howToPlay = new HowToPlayButton();
@@ -130,20 +136,20 @@ function title() {
   push();
   imageMode(CENTER, CENTER);
   image(posterThumbnail, width / 2, height / 2);
-  textSize(40);
-  textFont(startEndFont);
+  textSize(70);
+  textFont(titleFont);
   fill(200, 0, 0);
   stroke(0);
   strokeWeight(5);
-  textAlign(CENTER, CENTER);
-  text(`RAMBO: LAST BLOOD`, width / 2, height / 2);
+  textAlign(LEFT, CENTER);
+  text(`RAMBO: LAST BLOOD`, width / 8, height / 1.7);
   pop();
 }
 
 //Display the instructions on how to play
 function htp() {
   push();
-  textSize(30);
+  textSize(45);
   textFont(howToPlayFont);
   fill(200);
   stroke(0);
@@ -156,8 +162,8 @@ function htp() {
 //Displays the GameOver text
 function gameOver() {
   push();
-  textSize(40);
-  textFont(startEndFont);
+  textSize(90);
+  textFont(deathFont);
   fill(225, 25, 25);
   stroke(0);
   strokeWeight(5);
@@ -211,7 +217,7 @@ function gameplay() {
   }
 }
 
-//Spawn system
+//Spawn system(s)
 function waveSpawn() {
   for (let i = enemyGroup.length - 1; i > 0; i--) {
     let enemy = enemyGroup[i];
@@ -224,6 +230,8 @@ function waveSpawn() {
     }
   }
 }
+
+//function items(){}
 
 //Mouse presses for menu buttons, and to fire in game state, dependant on states
 function mousePressed() {

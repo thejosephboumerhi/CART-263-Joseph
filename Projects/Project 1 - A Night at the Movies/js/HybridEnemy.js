@@ -1,5 +1,4 @@
-//Now fulfills both the roles of a melee and ranged enemy, and is very
-//threating, even if there is only one of them. (Used to be MeleeEnemy).
+//Gang marksmen from movie
 class HybridEnemy {
   constructor(x, y) {
     this.x = x;
@@ -9,8 +8,8 @@ class HybridEnemy {
     this.vy = 0;
     this.ax = 0;
     this.ay = 0;
-    this.accel = 2;
-    this.MaxV = 6;
+    this.accel = 1;
+    this.MaxV = 3;
     this.friction = 0.95;
     this.active = true;
     this.gattlingSpeed = 0;
@@ -71,12 +70,11 @@ class HybridEnemy {
       angle += PI;
     }
 
-    //Instead of the enemy spraying bullets every frame, it shoots
-    //every 3 frames, it sprays a wall of them, so it makes you
-    //want to move out of the way. Dana helped me discover %, and showed me how
-    //it works.
+    //Since there will be likely more enemies, number of bullets shot will
+    //decrease, to also compensate for better performance (don't want the
+    //enemies to drop the frames too much)
 
-    if (this.gattlingSpeed % 3 === 0) {
+    if (this.gattlingSpeed % 45 === 0) {
       let enemyProjectile = new EnemyProjectile(x, y, angle);
       enemyProjectile.speed;
       enemyProjectileOut.push(enemyProjectile);
@@ -95,4 +93,6 @@ class HybridEnemy {
       player.invinciTime = frameCount + 30;
     }
   }
+
+  //enemySound(){}
 }
