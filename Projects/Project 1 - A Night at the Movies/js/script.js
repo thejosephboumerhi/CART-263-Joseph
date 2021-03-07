@@ -1,11 +1,11 @@
-"use strict";
-
 /**
 P1: Night at the Movies
 Joseph Boumerhi
 
-I made a game of the movie "Rambo: Last Blood"
+I made a game based on the movie "Rambo: Last Blood"
 */
+
+"use strict";
 
 //Starting state
 let state = `title`;
@@ -62,6 +62,7 @@ Description of draw()
 function draw() {
   if (state === `title`) {
     background(0);
+    cursor();
     title();
     play.displayButton();
     howToPlay.displayButton();
@@ -81,101 +82,103 @@ function draw() {
     gameOver();
     backToMenu.displayButton();
   }
+}
 
-  //Game stuff
+//Game stuff
 
-  function gameplay() {}
+//function gameplay() {}
 
-  //Usual text for the various states
+//Usual text for the various states
 
-  function title() {
-    push();
-    //imageMode(LEFT, CENTER);
-    //image(, 0, 0);
-    textSize(40);
-    textFont(fontTitle);
-    fill(255, 0, 0);
-    stroke(0);
-    strokeWeight(5);
-    textAlign(CENTER, CENTER);
-    text(`RAMBO: LAST BLOOD`, width / 2, height / 2);
-    pop();
+function title() {
+  push();
+  //imageMode(LEFT, CENTER);
+  //image(, 0, 0);
+  textSize(40);
+  textFont(fontTitle);
+  fill(255, 0, 0);
+  stroke(0);
+  strokeWeight(5);
+  textAlign(CENTER, CENTER);
+  text(`RAMBO: LAST BLOOD`, width / 2, height / 2);
+  pop();
+}
+
+//Display the instructions on how to play
+function howToPlay() {
+  push();
+  textSize(30);
+  textFont(instrucFont);
+  fill(200);
+  stroke(0);
+  strokeWeight(5);
+  textAlign(CENTER, CENTER);
+  text(instructions, width / 2, height / 2);
+  pop();
+}
+
+//Displays the victory text
+function gameWin() {
+  push();
+  textSize(40);
+  textFont(endGoodFont);
+  fill(225, 25, 25);
+  stroke(0);
+  strokeWeight(5);
+  textAlign(CENTER, CENTER);
+  text(`You Win`, width / 2, height / 2);
+  pop();
+}
+
+//Displays the losing text
+function gameOver() {
+  push();
+  textSize(40);
+  textFont(endBadFont);
+  fill(225, 25, 25);
+  stroke(0);
+  strokeWeight(5);
+  textAlign(CENTER, CENTER);
+  text(`You Died`, width / 2, height / 2);
+  pop();
+}
+
+function mousePressed() {
+  //Allows for the buttons to be used, alongside the state they change to when
+  //pressed on.
+
+  //The play button to start the game
+  if (
+    mouseX > play.x &&
+    mouseX < play.x + play.w &&
+    mouseY > play.y &&
+    mouseY < play.y + play.h &&
+    state === `title`
+  ) {
+    state = `inGame`;
   }
 
-  //Display the instructions on how to play
-  function howToPlay() {
-    push();
-    textSize(30);
-    textFont(instrucFont);
-    fill(200);
-    stroke(0);
-    strokeWeight(5);
-    textAlign(CENTER, CENTER);
-    text(instructions, width / 2, height / 2);
-    pop();
+  //The button to look at the instructions
+  if (
+    mouseX > howToPlay.x &&
+    mouseX < howToPlay.x + howToPlay.w &&
+    mouseY > howToPlay.y &&
+    mouseY < howToPlay.y + howToPlay.h &&
+    state === `title`
+  ) {
+    state = `howToPlay`;
   }
 
-  //Displays the victory text
-  function gameWin() {
-    push();
-    textSize(40);
-    textFont(endGoodFont);
-    fill(225, 25, 25);
-    stroke(0);
-    strokeWeight(5);
-    textAlign(CENTER, CENTER);
-    text(`You Win`, width / 2, height / 2);
-    pop();
-  }
-
-  //Displays the losing text
-  function gameOver() {
-    push();
-    textSize(40);
-    textFont(endBadFont);
-    fill(225, 25, 25);
-    stroke(0);
-    strokeWeight(5);
-    textAlign(CENTER, CENTER);
-    text(`You Died`, width / 2, height / 2);
-    pop();
-  }
-
-  function mousePressed() {
-    //Allows for the buttons to be used, alongside the state they change to when
-    //pressed on.
-
-    //The play button to start the game
-    if (
-      mouseX > play.x &&
-      mouseX < play.x + play.w &&
-      mouseY > play.y &&
-      mouseY < play.y + play.h &&
-      state === `title`
-    ) {
-      state = `inGame`;
-    }
-
-    //The button to look at the instructions
-    if (
-      mouseX > howToPlay.x &&
-      mouseX < howToPlay.x + howToPlay.w &&
-      mouseY > howToPlay.y &&
-      mouseY < howToPlay.y + howToPlay.h &&
-      state === `title`
-    ) {
-      state = `howToPlay`;
-    }
-
-    //A "back" button, so you can move back to the menu and play
-    if (
-      mouseX > backToMenu.x &&
+  //A "back" button, so you can move back to the menu and play
+  if (
+    (mouseX > backToMenu.x &&
       mouseX < backToMenu.x + backToMenu.w &&
       mouseY > backToMenu.y &&
       mouseY < backToMenu.y + backToMenu.h &&
-      state === `howToPlay`
-    ) {
-      state = `title`;
-    }
+      state === `howToPlay`) ||
+    `winGame` ||
+    `endGame`
+  ) {
+    state = `title`;
   }
 }
