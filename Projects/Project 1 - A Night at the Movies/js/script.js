@@ -1,65 +1,108 @@
-/**
-P1: Night at the Movies
+/**************************************************
+Project 1: A Night at the Movies
 Joseph Boumerhi
 
-I made a game based on the movie "Rambo: Last Blood"
-*/
-
-"use strict";
-
-//Starting state
+I based this game off "Rambo: Last Blood", reused
+"Neo-Tenebris" from last semester, gave it a new coating of paint,
+with the addition of new things
+**************************************************/
+`use strict`;
+//Starting state, the main menu
 let state = `title`;
 
+//Player Variable
 let player;
 
-//Variables for the fonts
-let fontTitle;
-let boxFont;
-let instrucFont;
-let endGoodFont;
-let endBadFont;
+//Font Variables
+let startEndFont;
+let buttonFont;
+let howToPlayFont;
 
-let instructions = `[WASD] to move around`;
+//Instructions for htp() function
+let instructions = `Press [WASD] to move around
 
-/**
-Description of preload
-*/
+Use Mouse to look around, and left click to shoot`;
+
+//Enemy array, two spawn
+let enemyGroup = [];
+let enemyNum = 2;
+//For spawning (overhauled)
+//numDead = 0;
+
+//Player projectile array, semi-auto firing, and fast moving shots
+let projectileOut = [];
+let projectileShot = 1;
+
+//Enemy projectile array, fast firing and slow moving shots
+let enemyProjectileOut = [];
+let enemyProjectileShot = 1;
+
+//Images for the game, made by me using Piskel, an online pixel editor
+let posterThumbnail;
+let playerImg;
+let playerRunImg;
+let cursorImg;
+let playerArmImg;
+let playerShotImg;
+let backgroundImg;
+let titleImg;
+let meleeEnemyImg;
+let rangedEnemyImg;
+let enemyShotImg;
+
+//Preloads assets
 function preload() {
   //All fonts from daFont
-  //https://www.dafont.com/no-safety-zone.font
-  fontTitle = loadFont("assets/fonts/NoSafetyZone.ttf");
+  //www.dafont.com/no-safety-zone.font
+  https: startEndFont = loadFont("assets/fonts/NoSafetyZone.ttf");
   //https://www.dafont.com/dirtybag.font
-  boxFont = loadFont("assets/fonts/DIRTYBAG.ttf");
-  //https://www.dafont.com/lt-emphasis.font
-  instrucFont = loadFont("assets/fonts/LTEmphasis.ttf");
-  //https://www.dafont.com/no-safety-zone.font
-  endGoodFont = loadFont("assets/fonts/NoSafetyZone.ttf");
+  buttonFont = loadFont("assets/fonts/DIRTYBAG.ttf");
+  //https://www.dafont.com/vcr-osd-mono.font
+  howToPlayFont = loadFont("assets/fonts/LTEmphasis.ttf");
   //https://www.dafont.com/blood-lust.font
-  endBadFont = loadFont("assets/fonts/BloodLust.ttf");
 
-  //For the sprites
+  posterThumbnail = loadImage("assets/images/RamboLastBloodMovieThumbnail.jpg");
+
+  //Pixel Sprites
+  //For the player
+  playerImg = loadImage("assets/images/PlayerCharacterStanding.png");
+  playerRunImg = loadImage("assets/images/PlayerCharacterRunning.gif");
+  playerArmImg = loadImage("assets/images/WeaponArm.png");
+  playerShotImg = loadImage("assets/images/UserBullet.gif");
+  cursorImg = loadImage("assets/images/CursorV2.png");
+  //For aesthetic
+  titleImg = loadImage("assets/images/Neo-Tenebris.png");
+  backgroundImg = loadImage("assets/images/Arena.gif");
+  //For the enemy/enemies
+  meleeEnemyImg = loadImage("assets/images/MeleeEnemy.gif");
+  rangedEnemyImg = loadImage("assets/images/RangedEnemy.gif");
+  enemyShotImg = loadImage("assets/images/EnemyBullet.gif");
 }
 
-/**
-Description of setup
-*/
+//One-Time Setup
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  //player = new Player();
-
-  //Setups the buttons once (the nice buttons I had made for last semester)
+  player = new Player();
+  let i = 0;
+  for (i = 0; i < enemyNum; i++) {
+    let x = random(0, width);
+    let y = random(0, height);
+    let enemy = new HybridEnemy(x, y);
+    enemyGroup.push(enemy);
+  }
+  //Setups the buttons once, to save resources (Dana I think told me this)
   button = new Buttons();
   play = new PlayButton();
   howToPlay = new HowToPlayButton();
   backToMenu = new BackToTitleButton();
 }
 
-/**
-Description of draw()
-*/
-
-//Usual state machine
+//Starts with title, then gameplay, finally GameOver
 function draw() {
+  background(175, 150, 150);
+
+  //Different states, and backgrounds running first to be in back layer,
+  //otherwise it would overlap and you wouldn't see anything
   if (state === `title`) {
     background(0);
     cursor();
@@ -68,35 +111,28 @@ function draw() {
     howToPlay.displayButton();
   } else if (state === `howToPlay`) {
     background(0);
-    howToPlay();
+    htp();
     backToMenu.displayButton();
   } else if (state === `inGame`) {
-    background(0);
-    //gameplay();
-  } else if (state === `winGame`) {
-    background(0);
-    gameWin();
-    backToMenu.displayButton();
+    background(backgroundImg);
+    gameplay();
   } else if (state === `endGame`) {
     background(0);
     gameOver();
-    backToMenu.displayButton();
   }
 }
 
-//Game stuff
-
-//function gameplay() {}
-
-//Usual text for the various states
-
+//The usual text for the states
+//Displays the title name, and a icon of the OC (the player character) for this
+//game, the titleImg was also done for a graphic design, and that teacher really
+//like the look of it
 function title() {
   push();
-  //imageMode(LEFT, CENTER);
-  //image(, 0, 0);
+  imageMode(CENTER, CENTER);
+  image(posterThumbnail, width / 2, height / 2);
   textSize(40);
-  textFont(fontTitle);
-  fill(255, 0, 0);
+  textFont(startEndFont);
+  fill(200, 0, 0);
   stroke(0);
   strokeWeight(5);
   textAlign(CENTER, CENTER);
@@ -105,10 +141,10 @@ function title() {
 }
 
 //Display the instructions on how to play
-function howToPlay() {
+function htp() {
   push();
   textSize(30);
-  textFont(instrucFont);
+  textFont(howToPlayFont);
   fill(200);
   stroke(0);
   strokeWeight(5);
@@ -117,24 +153,11 @@ function howToPlay() {
   pop();
 }
 
-//Displays the victory text
-function gameWin() {
-  push();
-  textSize(40);
-  textFont(endGoodFont);
-  fill(225, 25, 25);
-  stroke(0);
-  strokeWeight(5);
-  textAlign(CENTER, CENTER);
-  text(`You Win`, width / 2, height / 2);
-  pop();
-}
-
-//Displays the losing text
+//Displays the GameOver text
 function gameOver() {
   push();
   textSize(40);
-  textFont(endBadFont);
+  textFont(startEndFont);
   fill(225, 25, 25);
   stroke(0);
   strokeWeight(5);
@@ -143,6 +166,66 @@ function gameOver() {
   pop();
 }
 
+//Game starts in "inGame" state, player could now play, enemy spawns over
+//and attack.
+function gameplay() {
+  player.movementInput();
+  player.health();
+  player.display();
+  player.cursor();
+  player.border();
+  waveSpawn();
+
+  //Lets the spawned enemy have their properties, and at least an ability of
+  //continuing to spawn
+  for (let i = 0; i < enemyGroup.length; i++) {
+    let enemy = enemyGroup[i];
+    if (enemy.active) {
+      let x = random(0, width);
+      let y = random(0, height);
+      enemy.display();
+      enemy.chase();
+      enemy.attackOverlap();
+      enemy.enemyTargeting();
+    }
+
+    //Lets the projectile have its properties when it's being fired
+    for (let j = projectileOut.length - 1; j >= 0; j--) {
+      let projectile = projectileOut[j];
+      projectile.projectile(enemy);
+      projectile.collision(enemy);
+      if (projectile.active === false) {
+        projectileOut.splice(j, 1);
+      }
+    }
+
+    //Lets the enemy projectile have its properties when it's being fired
+    for (let e = enemyProjectileOut.length - 1; e >= 0; e--) {
+      let enemyProjectile = enemyProjectileOut[e];
+      enemyProjectile.projectile(player);
+      enemyProjectile.collision(player);
+      if (enemyProjectile.active === false) {
+        enemyProjectileOut.splice(e, 1);
+      }
+    }
+  }
+}
+
+//Spawn system
+function waveSpawn() {
+  for (let i = enemyGroup.length - 1; i > 0; i--) {
+    let enemy = enemyGroup[i];
+    if (enemy.active === false) {
+      enemyGroup.splice(i, 1);
+      let x = random(0, width);
+      let y = random(0, height);
+      let enemy = new HybridEnemy(x, y);
+      enemyGroup.push(enemy);
+    }
+  }
+}
+
+//Mouse presses for menu buttons, and to fire in game state, dependant on states
 function mousePressed() {
   //Allows for the buttons to be used, alongside the state they change to when
   //pressed on.
@@ -171,14 +254,15 @@ function mousePressed() {
 
   //A "back" button, so you can move back to the menu and play
   if (
-    (mouseX > backToMenu.x &&
-      mouseX < backToMenu.x + backToMenu.w &&
-      mouseY > backToMenu.y &&
-      mouseY < backToMenu.y + backToMenu.h &&
-      state === `howToPlay`) ||
-    `winGame` ||
-    `endGame`
+    mouseX > backToMenu.x &&
+    mouseX < backToMenu.x + backToMenu.w &&
+    mouseY > backToMenu.y &&
+    mouseY < backToMenu.y + backToMenu.h &&
+    state === `howToPlay`
   ) {
     state = `title`;
+  } else if (state === `inGame`) {
+    //Allows the player to shoot when it is the "inGame" state
+    player.weaponAim();
   }
 }

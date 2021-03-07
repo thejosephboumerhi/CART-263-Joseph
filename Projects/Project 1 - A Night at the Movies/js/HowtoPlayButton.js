@@ -4,7 +4,7 @@ class HowToPlayButton extends Buttons {
     super(x, y);
     this.x = width / 1.5;
     this.y = height / 1.5;
-    this.font = boxFont;
+    this.font = buttonFont;
     this.w = 175;
     this.h = 100;
   }

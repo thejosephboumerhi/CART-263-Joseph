@@ -1,3 +1,4 @@
+//Parent class of the buttons
 class Buttons {
   constructor(x, y) {
     this.x = undefined;

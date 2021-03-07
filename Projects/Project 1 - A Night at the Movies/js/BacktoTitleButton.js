@@ -4,7 +4,7 @@ class BackToTitleButton extends Buttons {
     super(x, y);
     this.x = width / 2.3;
     this.y = height / 1.2;
-    this.font = boxFont;
+    this.font = buttonFont;
     this.w = 175;
     this.h = 100;
   }
