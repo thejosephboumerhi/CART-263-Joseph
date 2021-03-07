@@ -74,15 +74,15 @@ function preload() {
   playerImg = loadImage("assets/images/PlayerCharacterStanding.png");
   playerRunImg = loadImage("assets/images/PlayerCharacterRunning.gif");
   playerArmImg = loadImage("assets/images/WeaponArm.png");
-  playerShotImg = loadImage("assets/images/UserBullet.gif");
-  cursorImg = loadImage("assets/images/CursorV2.png");
+  playerShotImg = loadImage("assets/images/PlayerBullet.png");
+  cursorImg = loadImage("assets/images/RamboCursor.png");
   //For aesthetic
-  titleImg = loadImage("assets/images/Neo-Tenebris.png");
-  backgroundImg = loadImage("assets/images/Arena.gif");
+  backgroundImg = loadImage("assets/images/CaveColourTheme.png");
+  backgroundImg = loadImage("assets/images/CaveColourTheme.png");
   //For the enemy/enemies
   meleeEnemyImg = loadImage("assets/images/MeleeEnemy.gif");
   rangedEnemyImg = loadImage("assets/images/RangedEnemy.gif");
-  enemyShotImg = loadImage("assets/images/EnemyBullet.gif");
+  enemyShotImg = loadImage("assets/images/EnemyBullet.png");
 }
 
 //One-Time Setup
