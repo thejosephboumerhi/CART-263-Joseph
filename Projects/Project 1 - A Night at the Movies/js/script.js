@@ -4,46 +4,54 @@
 P1: Night at the Movies
 Joseph Boumerhi
 
-A game of the movie ""
+I made a game of the movie "Rambo: Last Blood"
 */
 
 //Starting state
 let state = `title`;
+
 let player;
 
 //Variables for the fonts
-//let fontTitle;
-//let helpFont;
-//let inGameFont;
-//let endGoodFont;
-//let endBadFont;
+let fontTitle;
+let boxFont;
+let instrucFont;
+let endGoodFont;
+let endBadFont;
 
 let instructions = `[WASD] to move around`;
 
 /**
 Description of preload
 */
-//function preload() {
-////All fonts from daFont
-//https://www.dafont.com/code.font
-//fontTitle = loadFont("assets/fonts/CODE Bold.ttf");
-//helpFont = loadFont("assets/fonts/ka1.ttf");
-//https://www.dafont.com/vcr-osd-mono.font
-//inGameFont =  loadFont("assets/fonts/VCR_OSD_MONO_1.001.ttf");
-//https://www.dafont.com/no-safety-zone.font
-//endGoodFont = loadFont("assets/fonts");
-//https://www.dafont.com/blood-lust.font
-//endBadFont = loadFont("assets/fonts/");
+function preload() {
+  //All fonts from daFont
+  //https://www.dafont.com/no-safety-zone.font
+  fontTitle = loadFont("assets/fonts/NoSafetyZone.ttf");
+  //https://www.dafont.com/dirtybag.font
+  boxFont = loadFont("assets/fonts/DIRTYBAG.ttf");
+  //https://www.dafont.com/lt-emphasis.font
+  instrucFont = loadFont("assets/fonts/LTEmphasis.ttf");
+  //https://www.dafont.com/no-safety-zone.font
+  endGoodFont = loadFont("assets/fonts/NoSafetyZone.ttf");
+  //https://www.dafont.com/blood-lust.font
+  endBadFont = loadFont("assets/fonts/BloodLust.ttf");
 
-//For the sprites
-//}
+  //For the sprites
+}
 
 /**
 Description of setup
 */
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  player = new Player();
+  //player = new Player();
+
+  //Setups the buttons once (the nice buttons I had made for last semester)
+  button = new Buttons();
+  play = new PlayButton();
+  howToPlay = new HowToPlayButton();
+  backToMenu = new BackToTitleButton();
 }
 
 /**
@@ -55,18 +63,23 @@ function draw() {
   if (state === `title`) {
     background(0);
     title();
+    play.displayButton();
+    howToPlay.displayButton();
   } else if (state === `howToPlay`) {
     background(0);
     howToPlay();
+    backToMenu.displayButton();
   } else if (state === `inGame`) {
     background(0);
     //gameplay();
   } else if (state === `winGame`) {
     background(0);
     gameWin();
+    backToMenu.displayButton();
   } else if (state === `endGame`) {
     background(0);
     gameOver();
+    backToMenu.displayButton();
   }
 
   //Game stuff
@@ -81,11 +94,11 @@ function draw() {
     //image(, 0, 0);
     textSize(40);
     textFont(fontTitle);
-    fill(200, 0, 0);
+    fill(255, 0, 0);
     stroke(0);
     strokeWeight(5);
     textAlign(CENTER, CENTER);
-    text(`A`, width / 2, height / 2);
+    text(`RAMBO: LAST BLOOD`, width / 2, height / 2);
     pop();
   }
 
@@ -93,7 +106,7 @@ function draw() {
   function howToPlay() {
     push();
     textSize(30);
-    textFont(helpFont);
+    textFont(instrucFont);
     fill(200);
     stroke(0);
     strokeWeight(5);
@@ -102,7 +115,7 @@ function draw() {
     pop();
   }
 
-  //Displays the GameOver text
+  //Displays the victory text
   function gameWin() {
     push();
     textSize(40);
@@ -115,7 +128,7 @@ function draw() {
     pop();
   }
 
-  //Displays the GameOver text
+  //Displays the losing text
   function gameOver() {
     push();
     textSize(40);
@@ -126,5 +139,43 @@ function draw() {
     textAlign(CENTER, CENTER);
     text(`You Died`, width / 2, height / 2);
     pop();
+  }
+
+  function mousePressed() {
+    //Allows for the buttons to be used, alongside the state they change to when
+    //pressed on.
+
+    //The play button to start the game
+    if (
+      mouseX > play.x &&
+      mouseX < play.x + play.w &&
+      mouseY > play.y &&
+      mouseY < play.y + play.h &&
+      state === `title`
+    ) {
+      state = `inGame`;
+    }
+
+    //The button to look at the instructions
+    if (
+      mouseX > howToPlay.x &&
+      mouseX < howToPlay.x + howToPlay.w &&
+      mouseY > howToPlay.y &&
+      mouseY < howToPlay.y + howToPlay.h &&
+      state === `title`
+    ) {
+      state = `howToPlay`;
+    }
+
+    //A "back" button, so you can move back to the menu and play
+    if (
+      mouseX > backToMenu.x &&
+      mouseX < backToMenu.x + backToMenu.w &&
+      mouseY > backToMenu.y &&
+      mouseY < backToMenu.y + backToMenu.h &&
+      state === `howToPlay`
+    ) {
+      state = `title`;
+    }
   }
 }

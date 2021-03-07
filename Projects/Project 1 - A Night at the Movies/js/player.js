@@ -60,4 +60,9 @@ class Player {
   displayPlayer() {}
 
   playerSound() {}
+
+  border() {
+    this.x = constrain(this.x, 0, width);
+    this.y = constrain(this.y, 0, height);
+  }
 }
