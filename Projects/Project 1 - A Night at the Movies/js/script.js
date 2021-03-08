@@ -57,7 +57,6 @@ let playerArmImg;
 let playerShotImg;
 let backgroundImg;
 let titleImg;
-let meleeEnemyImg;
 let rangedEnemyImg;
 let enemyShotImg;
 let rockImg;
@@ -92,7 +91,6 @@ function preload() {
   //For aesthetic
   backgroundImg = loadImage("assets/images/CaveColourTheme.png");
   //For the enemy/enemies
-  meleeEnemyImg = loadImage("assets/images/MeleeEnemy.gif");
   rangedEnemyImg = loadImage("assets/images/RangedEnemy.gif");
   enemyShotImg = loadImage("assets/images/EnemyBullet.png");
 }
