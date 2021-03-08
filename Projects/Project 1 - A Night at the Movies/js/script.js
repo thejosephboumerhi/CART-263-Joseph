@@ -38,6 +38,14 @@ let projectileShot = 1;
 let enemyProjectileOut = [];
 let enemyProjectileShot = 1;
 
+//Healing item array, spawns in healing item for limited time
+let healItemOut = [];
+let healItemAvailable = 1;
+
+//Rock obstacle array, spawns walls/cover
+let rockObstacleOut = [];
+let rockObstacleSetup = 1;
+
 //Images for the game, made by me using Piskel, an online pixel editor
 let posterThumbnail;
 
@@ -52,6 +60,8 @@ let titleImg;
 let meleeEnemyImg;
 let rangedEnemyImg;
 let enemyShotImg;
+let rockImg;
+let healingPrescriptionImg;
 
 //Preloads assets
 function preload() {
@@ -76,8 +86,10 @@ function preload() {
   playerArmImg = loadImage("assets/images/WeaponArm.png");
   playerShotImg = loadImage("assets/images/PlayerBullet.png");
   cursorImg = loadImage("assets/images/RamboCursor.png");
+  //For objects
+  rockImg = loadImage("assets/images/CavePiece.png");
+  healingPrescriptionImg = loadImage("assets/images/PrescriptionHeal.gif");
   //For aesthetic
-  backgroundImg = loadImage("assets/images/CaveColourTheme.png");
   backgroundImg = loadImage("assets/images/CaveColourTheme.png");
   //For the enemy/enemies
   meleeEnemyImg = loadImage("assets/images/MeleeEnemy.gif");
@@ -90,11 +102,26 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   player = new Player();
   let i = 0;
+  //
   for (i = 0; i < enemyNum; i++) {
     let x = random(0, width);
     let y = random(0, height);
     let enemy = new HybridEnemy(x, y);
     enemyGroup.push(enemy);
+  }
+  //
+  for (i = 0; i < healItemAvailable; i++) {
+    let x = random(0, width);
+    let y = random(0, height);
+    let heals = new HealingItem(x, y);
+    healItemOut.push(heals);
+  }
+  //
+  for (i = 0; i < rockObstacleSetup; i++) {
+    let x = random(0, width);
+    let y = random(0, height);
+    let cave = new CaveStructures(x, y);
+    rockObstacleOut.push(cave);
   }
   //Setups the buttons once, to save resources
   button = new Buttons();
@@ -181,6 +208,7 @@ function gameplay() {
   player.cursor();
   player.border();
   waveSpawn();
+  itemSpawn();
 
   //Lets the spawned enemy have their properties, and at least an ability of
   //continuing to spawn
@@ -194,30 +222,50 @@ function gameplay() {
       enemy.attackOverlap();
       enemy.enemyTargeting();
     }
+  }
 
-    //Lets the projectile have its properties when it's being fired
-    for (let j = projectileOut.length - 1; j >= 0; j--) {
-      let projectile = projectileOut[j];
-      projectile.projectile(enemy);
-      projectile.collision(enemy);
-      if (projectile.active === false) {
-        projectileOut.splice(j, 1);
-      }
+  for (let i = 0; i < healItemOut.length; i++) {
+    let heals = healItemOut[i];
+    if (heals.active) {
+      let x = random(0, width);
+      let y = random(0, height);
+      heals.displayHealItem();
+      heals.healOverlap();
     }
+  }
 
-    //Lets the enemy projectile have its properties when it's being fired
-    for (let e = enemyProjectileOut.length - 1; e >= 0; e--) {
-      let enemyProjectile = enemyProjectileOut[e];
-      enemyProjectile.projectile(player);
-      enemyProjectile.collision(player);
-      if (enemyProjectile.active === false) {
-        enemyProjectileOut.splice(e, 1);
-      }
+  for (let i = 0; i < rockObstacleOut.length; i++) {
+    let cave = rockObstacleOut[i];
+    if (cave.active) {
+      let x = random(0, width);
+      let y = random(0, height);
+      cave.displayStructure();
+    }
+  }
+
+  //Lets the projectile have its properties when it's being fired
+  for (let j = projectileOut.length - 1; j >= 0; j--) {
+    let projectile = projectileOut[j];
+    projectile.projectile(enemy);
+    projectile.collision(enemy);
+    if (projectile.active === false) {
+      projectileOut.splice(j, 1);
+    }
+  }
+
+  //Lets the enemy projectile have its properties when it's being fired
+  for (let e = enemyProjectileOut.length - 1; e >= 0; e--) {
+    let enemyProjectile = enemyProjectileOut[e];
+    enemyProjectile.projectile(player);
+    enemyProjectile.collision(player);
+    if (enemyProjectile.active === false) {
+      enemyProjectileOut.splice(e, 1);
     }
   }
 }
 
 //Spawn system(s)
+//For the enemy
 function waveSpawn() {
   for (let i = enemyGroup.length - 1; i > 0; i--) {
     let enemy = enemyGroup[i];
@@ -231,7 +279,19 @@ function waveSpawn() {
   }
 }
 
-//function items(){}
+//For item(s)
+function itemSpawn() {
+  for (let i = healItemOut.length - 1; i > 0; i--) {
+    let heals = healItemOut[i];
+    if (heals.active === false) {
+      healItemOut.splice(i, 1);
+      let x = random(0, width);
+      let y = random(0, height);
+      let heals = new HealingItem(x, y);
+      healItemOut.push(heals);
+    }
+  }
+}
 
 //Mouse presses for menu buttons, and to fire in game state, dependant on states
 function mousePressed() {
