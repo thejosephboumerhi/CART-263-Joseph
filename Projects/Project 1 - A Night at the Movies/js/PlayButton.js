@@ -9,11 +9,11 @@ class PlayButton extends Buttons {
     this.h = 100;
   }
 
-  //Yellow "Play" button
+  //Orange "Play" button
   displayButton() {
     super.displayButton();
     push();
-    fill(200, 200, 0);
+    fill(252, 119, 3);
     rect(this.x, this.y, this.w, this.h);
     textAlign(CENTER, CENTER);
     textSize(50);

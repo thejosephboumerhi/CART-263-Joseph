@@ -9,11 +9,11 @@ class BackToTitleButton extends Buttons {
     this.h = 100;
   }
 
-  //Green "back" button
+  //Gray "back" button
   displayButton() {
     super.displayButton();
     push();
-    fill(50, 200, 50);
+    fill(171, 171, 171);
     rect(this.x, this.y, this.w, this.h);
     textAlign(CENTER, CENTER);
     textSize(40);

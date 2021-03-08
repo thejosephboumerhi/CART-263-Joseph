@@ -163,8 +163,6 @@ class Player {
     playerProjectileOut.push(playerProjectile);
   }
 
-  //playerSound(){}
-
   //Usual border block, simulates an arena
   border() {
     this.x = constrain(this.x, 0, width);

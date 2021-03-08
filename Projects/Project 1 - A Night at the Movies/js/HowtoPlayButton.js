@@ -9,11 +9,11 @@ class HowToPlayButton extends Buttons {
     this.h = 100;
   }
 
-  //Red "how-to" button
+  //Yellow "how-to" button
   displayButton() {
     super.displayButton();
     push();
-    fill(200, 50, 50);
+    fill(222, 237, 9);
     rect(this.x, this.y, this.w, this.h);
     textAlign(CENTER, CENTER);
     textSize(40);

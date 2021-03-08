@@ -9,8 +9,8 @@ class EnemySoldier {
     this.ax = 0;
     this.ay = 0;
     this.accel = 1;
-    this.MaxV = 3;
-    this.friction = 0.95;
+    this.MaxV = 2;
+    this.friction = 0.9;
     this.active = true;
     this.gattlingSpeed = 0;
   }
@@ -123,7 +123,7 @@ class EnemySoldier {
     //decrease, to also compensate for better performance (don't want the
     //enemies to drop the frames too much)
 
-    if (this.gattlingSpeed % 45 === 0) {
+    if (this.gattlingSpeed % 60 === 0) {
       let enemyProjectile = new EnemyProjectile(x, y, angle);
       enemyProjectile.speed;
       enemyProjectileOut.push(enemyProjectile);
@@ -142,6 +142,4 @@ class EnemySoldier {
       player.invinciTime = frameCount + 30;
     }
   }
-
-  //enemySound(){}
 }

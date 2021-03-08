@@ -4,7 +4,7 @@ class CaveStructures {
   constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.size = 150;
+    this.size = 125;
     this.appear = true;
   }
 

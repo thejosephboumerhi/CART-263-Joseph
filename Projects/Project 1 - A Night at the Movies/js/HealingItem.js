@@ -1,3 +1,4 @@
+//This is a healing item that player should go after to keep themselves alive
 class HealingItem {
   constructor(x, y) {
     this.x = x;
@@ -5,9 +6,9 @@ class HealingItem {
     this.size = 100;
     this.healthGiven = 25;
     this.active = true;
-    //this.itemTime = 300;
   }
 
+  //Displays a luminencent prescription
   displayHealItem() {
     push();
     imageMode(CENTER);
@@ -15,6 +16,7 @@ class HealingItem {
     pop();
   }
 
+  //Heals player 25% of their health, while briefly protecting them
   healOverlap(player) {
     let a = dist(player.x, player.y, this.x, this.y);
     if (a < this.size / 2 + player.size / 2) {
@@ -23,6 +25,4 @@ class HealingItem {
       this.active = false;
     }
   }
-
-  //itemDuration(){}
 }
