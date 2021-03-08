@@ -44,7 +44,7 @@ let healItemAvailable = 1;
 
 //Rock obstacle array, spawns walls/cover
 let rockObstacleOut = [];
-let rockObstacleSetup = 1;
+let rockObstacleSetup = 5;
 
 //Images for the game, made by me using Piskel, an online pixel editor
 let posterThumbnail;
@@ -101,20 +101,13 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   player = new Player();
-  let i = 0;
   //
+  let i = 0;
   for (i = 0; i < enemyNum; i++) {
     let x = random(0, width);
     let y = random(0, height);
     let enemy = new HybridEnemy(x, y);
     enemyGroup.push(enemy);
-  }
-  //
-  for (i = 0; i < healItemAvailable; i++) {
-    let x = random(0, width);
-    let y = random(0, height);
-    let heals = new HealingItem(x, y);
-    healItemOut.push(heals);
   }
   //
   for (i = 0; i < rockObstacleSetup; i++) {
@@ -123,6 +116,15 @@ function setup() {
     let cave = new CaveStructures(x, y);
     rockObstacleOut.push(cave);
   }
+  //
+  for (i = 0; i < healItemAvailable; i++) {
+    let x = random(0, width);
+    let y = random(0, height);
+    let heals = new HealingItem(x, y);
+    placeItem(heals, rockObstacleOut);
+    healItemOut.push(heals);
+  }
+
   //Setups the buttons once, to save resources
   button = new Buttons();
   play = new PlayButton();
@@ -221,6 +223,15 @@ function gameplay() {
       enemy.chase();
       enemy.attackOverlap();
       enemy.enemyTargeting();
+      //Lets the projectile have its properties when it's being fired
+      for (let j = projectileOut.length - 1; j >= 0; j--) {
+        let projectile = projectileOut[j];
+        projectile.projectile(enemy);
+        projectile.collision(enemy);
+        if (projectile.active === false) {
+          projectileOut.splice(j, 1);
+        }
+      }
     }
   }
 
@@ -240,16 +251,7 @@ function gameplay() {
       let x = random(0, width);
       let y = random(0, height);
       cave.displayStructure();
-    }
-  }
-
-  //Lets the projectile have its properties when it's being fired
-  for (let j = projectileOut.length - 1; j >= 0; j--) {
-    let projectile = projectileOut[j];
-    projectile.projectile(enemy);
-    projectile.collision(enemy);
-    if (projectile.active === false) {
-      projectileOut.splice(j, 1);
+      cave.bulletStuffing();
     }
   }
 
@@ -290,6 +292,34 @@ function itemSpawn() {
       let heals = new HealingItem(x, y);
       healItemOut.push(heals);
     }
+  }
+}
+
+function placeItem(heals, objectList) {
+  let positionFound = false;
+
+  // the following code will loop until positionFound becomes true
+  while (positionFound == false) {
+    // we start by picking a new position for the player
+    heals.x = random() * width;
+    heals.y = random() * height;
+
+    let itemOverlapsAnObject = false; // we will use this variable to keep track of any overlaps
+    // look through each object in the list
+    for (let i = 0; i < objectList.length; i++) {
+      // calculate the distance from the player to that object
+      let d = dist(heals.x, heals.y, objectList[i].x, objectList[i].y);
+      // then we check if that distance is shorter than the acceptable distance
+      if (d < 30) {
+        itemOverlapsAnObject = true;
+      }
+    }
+
+    // now that we've checked each object,
+    // the boolean playerOverlapsAnObject will be true is there was contact with an object.
+    // we can now update positionFound to be the opposite of that value (the position is 'found' if there is no overlap with any object)
+    // once positionFound becomes true, the while() loop stops and the player has a new random position
+    positionFound = !itemOverlapsAnObject;
   }
 }
 

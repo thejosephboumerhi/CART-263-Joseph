@@ -65,8 +65,51 @@ class Player {
     this.vx = this.vx * this.friction;
     this.vy = this.vy * this.friction;
 
-    this.x = this.x + this.vx;
-    this.y = this.y + this.vy;
+    let tempx = this.x + this.vx;
+    let collidedX = false;
+    for (let i = 0; i < rockObstacleOut.length; i++) {
+      let rock = rockObstacleOut[i];
+      if (
+        collideRectRect(
+          tempx,
+          this.y,
+          this.size,
+          this.size,
+          rock.x,
+          rock.y,
+          rock.size,
+          rock.size
+        )
+      ) {
+        collidedX = true;
+      }
+    }
+    if (!collidedX) {
+      this.x = this.x + this.vx;
+    }
+
+    let tempy = this.y + this.vy;
+    let collidedY = false;
+    for (let i = 0; i < rockObstacleOut.length; i++) {
+      let rock = rockObstacleOut[i];
+      if (
+        collideRectRect(
+          this.x,
+          tempy,
+          this.size,
+          this.size,
+          rock.x,
+          rock.y,
+          rock.size,
+          rock.size
+        )
+      ) {
+        collidedY = true;
+      }
+    }
+    if (!collidedY) {
+      this.y = this.y + this.vy;
+    }
 
     this.vx = this.ax + this.vx;
     this.vx = constrain(this.vx, -this.MaxV, this.MaxV);
@@ -77,7 +120,7 @@ class Player {
   //Shows player image, and makes them face in the direction of the mouse
   display() {
     push();
-    imageMode(CENTER);
+    imageMode(CORNER);
     translate(this.x, this.y);
 
     //Faces the "Standing" and "Running" playerImgs in direction of mouseX,
