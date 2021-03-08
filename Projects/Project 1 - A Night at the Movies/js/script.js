@@ -5,6 +5,8 @@ Joseph Boumerhi
 I based this game off "Rambo: Last Blood", reused
 "Neo-Tenebris" from last semester, gave it a new coat of paint,
 with the addition of new things, and some removals to fit a different feel
+The scene in which this game is trying to emulate is from 1:08:17 to 1:18:06, which is a
+final confrontation on Rambo's farm, and underground maze.
 **************************************************/
 `use strict`;
 //Starting state, the main menu
@@ -23,6 +25,8 @@ let deathFont;
 let instructions = `Press [WASD] to move around
 
 Use Mouse to look around, and left click to shoot`;
+
+//let note =;
 
 //Enemy array, two spawn
 let enemyGroup = [];
@@ -80,9 +84,8 @@ function preload() {
 
   //Pixel Sprites
   //For the player
-  playerImg = loadImage("assets/images/PlayerCharacterStanding.png");
-  playerRunImg = loadImage("assets/images/PlayerCharacterRunning.gif");
-  playerArmImg = loadImage("assets/images/WeaponArm.png");
+  playerImg = loadImage("assets/images/StalloneStanding.png");
+  playerRunImg = loadImage("assets/images/StalloneRunning.gif");
   playerShotImg = loadImage("assets/images/PlayerBullet.png");
   cursorImg = loadImage("assets/images/RamboCursor.png");
   //For objects
@@ -90,8 +93,8 @@ function preload() {
   healingPrescriptionImg = loadImage("assets/images/PrescriptionHeal.gif");
   //For aesthetic
   backgroundImg = loadImage("assets/images/CaveColourTheme.png");
-  //For the enemy/enemies
-  rangedEnemyImg = loadImage("assets/images/RangedEnemy.gif");
+  //For the enemy
+  rangedEnemyImg = loadImage("assets/images/EnemySoldierRunning.gif");
   enemyShotImg = loadImage("assets/images/EnemyBullet.png");
 }
 
@@ -104,7 +107,7 @@ function setup() {
   for (i = 0; i < enemyNum; i++) {
     let x = random(0, width);
     let y = random(0, height);
-    let enemy = new HybridEnemy(x, y);
+    let enemy = new EnemySoldier(x, y);
     enemyGroup.push(enemy);
   }
   //
@@ -273,7 +276,7 @@ function waveSpawn() {
       enemyGroup.splice(i, 1);
       let x = random(0, width);
       let y = random(0, height);
-      let enemy = new HybridEnemy(x, y);
+      let enemy = new EnemySoldier(x, y);
       enemyGroup.push(enemy);
     }
   }

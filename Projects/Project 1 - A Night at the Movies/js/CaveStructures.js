@@ -19,5 +19,9 @@ class CaveStructures {
       let projectile = projectileOut[j];
       projectile.collision(this);
     }
+    for (let e = enemyProjectileOut.length - 1; e >= 0; e--) {
+      let enemyProjectile = enemyProjectileOut[e];
+      enemyProjectile.collision(this);
+    }
   }
 }

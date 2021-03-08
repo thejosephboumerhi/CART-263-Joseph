@@ -13,7 +13,6 @@ class Player {
     this.friction = 0.9;
     this.healthPercent = 100;
     this.invinciTime = 0;
-    this.dashTime = 0;
     this.triggerSpeed = 0;
   }
 
@@ -35,36 +34,13 @@ class Player {
       this.ay = 0;
     }
 
-    //Allows player to be more evasive by dashing, by boosting accel and MaxV
-    //has orange gauge display
-    if (keyIsDown(32) && this.dashTime === 60 && this.MaxV === 9) {
-      this.accel = 8;
-      this.MaxV = 16;
-    } else if (this.dashTime > 0 && this.MaxV === 16) {
-      //Burns the gauge as you dash
-      this.dashTime--;
-    }
-
-    //Refills the gauge
-    if (this.dashTime === 0) {
-      this.accel = 3;
-      this.MaxV = 9;
-      this.dashTime = 60;
-    }
-
-    //Similar to the health, the * lets it look even bigger, so they aren't
-    //awkwardly small in comparison the large canvas
-    push();
-    let w = abs(this.dashTime - 30);
-    fill(150, 150, 75);
-    rectMode(CENTER);
-    rect(width / 2, 50, w * 4, 25);
-    pop();
+    //Removed dashing.
 
     //Allows for smoother WASD movement.
     this.vx = this.vx * this.friction;
     this.vy = this.vy * this.friction;
 
+    //New, Added p5.collision with the help of Samuel
     let tempx = this.x + this.vx;
     let collidedX = false;
     for (let i = 0; i < rockObstacleOut.length; i++) {
@@ -135,14 +111,6 @@ class Player {
     } else {
       image(playerImg, 0, 0, this.size, this.size);
     }
-
-    //Same, it runs after the above image to overlap, and flips when looking
-    //around.
-    if (this.x > mouseX) {
-      image(playerArmImg, 0, 0, this.size, this.size);
-    } else {
-      image(playerArmImg, 0, 0, this.size, this.size);
-    }
     pop();
   }
 
@@ -164,11 +132,7 @@ class Player {
       state = `endGame`;
     }
 
-    //If under 100%, you heal rapidly, but the enemy hits fairly hard and there's a
-    //lot of bullets flying
-    if (this.healthPercent < 100) {
-      this.healthPercent++;
-    }
+    //Removed fast heal regen.
 
     push();
     fill(100, 200, 100);

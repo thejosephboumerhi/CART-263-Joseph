@@ -1,5 +1,5 @@
 //Gang marksmen from movie
-class HybridEnemy {
+class EnemySoldier {
   constructor(x, y) {
     this.x = x;
     this.y = y;
@@ -15,8 +15,7 @@ class HybridEnemy {
     this.gattlingSpeed = 0;
   }
 
-  //Shows orb-like enemies, instead of the supposed meleeEnemyImg
-  //I put the rangedEnemyImg, since it just looks better in comparison
+  //Shows enemy soldier
   display() {
     push();
     imageMode(CENTER);
