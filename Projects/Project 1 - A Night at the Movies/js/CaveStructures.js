@@ -1,9 +1,11 @@
+//This allows to have interesting area layouts that players can utilize for each
+//reloaded playthrough
 class CaveStructures {
   constructor(x, y) {
     this.x = x;
     this.y = y;
     this.size = 150;
-    this.active = true;
+    this.appear = true;
   }
 
   //Display rock cube/part of tunnel
@@ -14,10 +16,11 @@ class CaveStructures {
     pop();
   }
 
+  //This breaks any bullets hitting the rock(s)
   bulletStuffing() {
-    for (let j = projectileOut.length - 1; j >= 0; j--) {
-      let projectile = projectileOut[j];
-      projectile.collision(this);
+    for (let j = playerProjectileOut.length - 1; j >= 0; j--) {
+      let playerProjectile = playerProjectileOut[j];
+      playerProjectile.collision(this);
     }
     for (let e = enemyProjectileOut.length - 1; e >= 0; e--) {
       let enemyProjectile = enemyProjectileOut[e];

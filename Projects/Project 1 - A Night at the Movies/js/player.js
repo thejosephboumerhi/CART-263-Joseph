@@ -3,7 +3,7 @@ class Player {
   constructor(x, y) {
     this.x = 0;
     this.y = 0;
-    this.size = 70;
+    this.size = 100;
     this.vx = 0;
     this.vy = 0;
     this.ax = 0;
@@ -34,13 +34,15 @@ class Player {
       this.ay = 0;
     }
 
-    //Removed dashing.
+    //Removed dashing, you move much slower now
 
     //Allows for smoother WASD movement.
     this.vx = this.vx * this.friction;
     this.vy = this.vy * this.friction;
 
     //New, Added p5.collision with the help of Samuel
+    //Link:https://github.com/bmoren/p5.collide2D
+    //Check for collisions between rock and player on the x-axis
     let tempx = this.x + this.vx;
     let collidedX = false;
     for (let i = 0; i < rockObstacleOut.length; i++) {
@@ -64,6 +66,7 @@ class Player {
       this.x = this.x + this.vx;
     }
 
+    //Then this time, it checks the y-axis between them
     let tempy = this.y + this.vy;
     let collidedY = false;
     for (let i = 0; i < rockObstacleOut.length; i++) {
@@ -99,8 +102,7 @@ class Player {
     imageMode(CORNER);
     translate(this.x, this.y);
 
-    //Faces the "Standing" and "Running" playerImgs in direction of mouseX,
-    //new playerImg, thanks to Samuel's assistance
+    //Faces the "Standing" and "Running" playerImgs in direction of mouseX
     if (this.x > mouseX) {
       scale(-1, 1);
     }
@@ -125,14 +127,12 @@ class Player {
 
   //Health system, game overs when it reaches 0%, has green gauge display
   //the *4 doesn't affect the percent, but enlarges the gauge
-  //Sam helped confirm how things should be set up for health, had the idea,
-  //just wondered what values and statements were needed
   health() {
     if (this.healthPercent <= 0) {
       state = `endGame`;
     }
 
-    //Removed fast heal regen.
+    //Removed fast heal regen, encourages slower play and calculated movement
 
     push();
     fill(100, 200, 100);
@@ -157,10 +157,10 @@ class Player {
       angle += PI;
     }
 
-    let projectile = new PlayerProjectile(x, y, angle);
+    let playerProjectile = new PlayerProjectile(x, y, angle);
 
-    projectile.speed;
-    projectileOut.push(projectile);
+    playerProjectile.speed;
+    playerProjectileOut.push(playerProjectile);
   }
 
   //playerSound(){}

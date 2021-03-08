@@ -3,7 +3,7 @@ class EnemySoldier {
   constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.size = 80;
+    this.size = 100;
     this.vx = 0;
     this.vy = 0;
     this.ax = 0;
@@ -18,8 +18,14 @@ class EnemySoldier {
   //Shows enemy soldier
   display() {
     push();
-    imageMode(CENTER);
+    imageMode(CORNER);
     image(rangedEnemyImg, this.x, this.y, this.size, this.size);
+    //Same like the player facing the other way, but uses cx
+    if (this.x > player.x) {
+      scale(-1, 1);
+    } else if (this.x < player.x) {
+      scale(1, 1);
+    }
     pop();
   }
 
@@ -44,6 +50,7 @@ class EnemySoldier {
     this.vx = this.vx * this.friction;
     this.vy = this.vy * this.friction;
 
+    //Same collision like player and rock, but with enemy instead
     let tempx = this.x + this.vx;
     let collidedX = false;
     for (let i = 0; i < rockObstacleOut.length; i++) {
@@ -131,7 +138,7 @@ class EnemySoldier {
       a < this.size / 2 + player.size / 2 &&
       player.invinciTime < frameCount
     ) {
-      player.healthPercent -= 40;
+      player.healthPercent -= 10;
       player.invinciTime = frameCount + 30;
     }
   }

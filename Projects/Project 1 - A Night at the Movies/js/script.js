@@ -21,7 +21,7 @@ let buttonFont;
 let howToPlayFont;
 let deathFont;
 
-//Instructions for htp() function
+//Instructions for instructionsTab() function
 let instructions = `Press [WASD] to move around
 
 Use Mouse to look around, and left click to shoot`;
@@ -30,13 +30,13 @@ Use Mouse to look around, and left click to shoot`;
 
 //Enemy array, two spawn
 let enemyGroup = [];
-let enemyNum = 2;
+let enemyNum = 3;
 //For spawning (overhauled)
 //numDead = 0;
 
 //Player projectile array, semi-auto firing, and fast moving shots
-let projectileOut = [];
-let projectileShot = 1;
+let playerProjectileOut = [];
+let playerProjectileShot = 1;
 
 //Enemy projectile array, fast firing and slow moving shots
 let enemyProjectileOut = [];
@@ -44,7 +44,7 @@ let enemyProjectileShot = 1;
 
 //Healing item array, spawns in healing item for limited time
 let healItemOut = [];
-let healItemAvailable = 1;
+let healItemAvailable = 2;
 
 //Rock obstacle array, spawns walls/cover
 let rockObstacleOut = [];
@@ -83,6 +83,7 @@ function preload() {
   posterThumbnail = loadImage("assets/images/RamboLastBloodMovieThumbnail.jpg");
 
   //Pixel Sprites
+  //Retained usual names for sake of easily switching assets
   //For the player
   playerImg = loadImage("assets/images/StalloneStanding.png");
   playerRunImg = loadImage("assets/images/StalloneRunning.gif");
@@ -147,7 +148,7 @@ function draw() {
     howToPlay.displayButton();
   } else if (state === `howToPlay`) {
     background(0);
-    htp();
+    instructionsTab();
     backToMenu.displayButton();
   } else if (state === `inGame`) {
     background(backgroundImg);
@@ -177,7 +178,7 @@ function title() {
 }
 
 //Display the instructions on how to play
-function htp() {
+function instructionsTab() {
   push();
   textSize(45);
   textFont(howToPlayFont);
@@ -225,30 +226,33 @@ function gameplay() {
       enemy.attackOverlap();
       enemy.enemyTargeting();
       //Lets the projectile have its properties when it's being fired
-      for (let j = projectileOut.length - 1; j >= 0; j--) {
-        let projectile = projectileOut[j];
-        projectile.projectile(enemy);
-        projectile.collision(enemy);
-        if (projectile.active === false) {
-          projectileOut.splice(j, 1);
+      for (let j = playerProjectileOut.length - 1; j >= 0; j--) {
+        let playerProjectile = playerProjectileOut[j];
+        playerProjectile.projectile(enemy);
+        playerProjectile.collision(enemy);
+        if (playerProjectile.active === false) {
+          playerProjectileOut.splice(j, 1);
         }
       }
     }
   }
 
+  //Spawns in prescriptions that heal you, replaces fast regen, and encourages
+  //player to move around the area
   for (let i = 0; i < healItemOut.length; i++) {
     let heals = healItemOut[i];
     if (heals.active) {
       let x = random(0, width);
       let y = random(0, height);
       heals.displayHealItem();
-      heals.healOverlap();
+      heals.healOverlap(player);
     }
   }
 
+  //Spawns in multiple squares of rocks that obstruct the player's path
   for (let i = 0; i < rockObstacleOut.length; i++) {
     let cave = rockObstacleOut[i];
-    if (cave.active) {
+    if (cave.appear) {
       let x = random(0, width);
       let y = random(0, height);
       cave.displayStructure();
@@ -296,12 +300,13 @@ function itemSpawn() {
   }
 }
 
+//Samuel gave me this code
 function placeItem(heals, objectList) {
   let positionFound = false;
 
   // the following code will loop until positionFound becomes true
   while (positionFound == false) {
-    // we start by picking a new position for the player
+    // we start by picking a new position for the item
     heals.x = random() * width;
     heals.y = random() * height;
 
@@ -311,7 +316,7 @@ function placeItem(heals, objectList) {
       // calculate the distance from the player to that object
       let d = dist(heals.x, heals.y, objectList[i].x, objectList[i].y);
       // then we check if that distance is shorter than the acceptable distance
-      if (d < 30) {
+      if (d < 200) {
         itemOverlapsAnObject = true;
       }
     }

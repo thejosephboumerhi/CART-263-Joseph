@@ -22,6 +22,7 @@ class EnemyProjectile {
       player.healthPercent -= 15;
       player.invinciTime = frameCount + 30;
       this.active = false;
+      this.fired = false;
     }
   }
 
@@ -40,7 +41,7 @@ class EnemyProjectile {
       this.active = false;
     }
 
-    //Displays the red electric projectile
+    //Displays grey bullet(s)
     if (this.fired) {
       image(enemyShotImg, this.x, this.y, this.size, this.size);
     }

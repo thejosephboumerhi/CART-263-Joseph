@@ -15,10 +15,10 @@ class HealingItem {
     pop();
   }
 
-  healOverlap() {
+  healOverlap(player) {
     let a = dist(player.x, player.y, this.x, this.y);
     if (a < this.size / 2 + player.size / 2) {
-      player.healthPercent + this.healthGiven;
+      player.healthPercent = player.healthPercent + this.healthGiven;
       player.invinciTime = frameCount + 30;
       this.active = false;
     }
