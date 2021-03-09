@@ -19,7 +19,7 @@ class EnemySoldier {
   display() {
     push();
     imageMode(CORNER);
-    image(rangedEnemyImg, this.x, this.y, this.size, this.size);
+    image(soldierEnemyImg, this.x, this.y, this.size, this.size);
     //Same like the player facing the other way, but uses cx
     if (this.x > player.x) {
       scale(-1, 1);

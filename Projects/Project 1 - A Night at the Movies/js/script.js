@@ -57,7 +57,7 @@ let playerArmImg;
 let playerShotImg;
 let backgroundImg;
 let titleImg;
-let rangedEnemyImg;
+let soldierEnemyImg;
 let enemyShotImg;
 let rockImg;
 let healingPrescriptionImg;
@@ -98,7 +98,7 @@ function preload() {
   //For aesthetic
   backgroundImg = loadImage("assets/images/CaveColourTheme.png");
   //For the enemy
-  rangedEnemyImg = loadImage("assets/images/EnemySoldierRunning.gif");
+  soldierEnemyImg = loadImage("assets/images/EnemySoldierRunning.gif");
   enemyShotImg = loadImage("assets/images/EnemyBullet.png");
 }
 
@@ -235,6 +235,7 @@ function gameplay() {
         let playerProjectile = playerProjectileOut[j];
         playerProjectile.projectile(enemy);
         playerProjectile.collision(enemy);
+        playerProjectile.breakBullet(cave);
         if (playerProjectile.active === false) {
           playerProjectileOut.splice(j, 1);
         }

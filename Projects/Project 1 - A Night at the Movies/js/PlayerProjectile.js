@@ -21,6 +21,52 @@ class PlayerProjectile {
       this.active = false;
       this.fired = false;
     }
+    let tempx = this.x + this.vx;
+    let collidedX = false;
+    for (let i = 0; i < rockObstacleOut.length; i++) {
+      let rock = rockObstacleOut[i];
+      if (
+        collideRectRect(
+          tempx,
+          this.y,
+          this.size,
+          this.size,
+          rock.x,
+          rock.y,
+          rock.size,
+          rock.size
+        )
+      ) {
+        collidedX = true;
+      }
+    }
+    if (!collidedX) {
+      this.active = false;
+    }
+
+    //Then this time, it checks the y-axis between them
+    let tempy = this.y + this.vy;
+    let collidedY = false;
+    for (let i = 0; i < rockObstacleOut.length; i++) {
+      let rock = rockObstacleOut[i];
+      if (
+        collideRectRect(
+          this.x,
+          tempy,
+          this.size,
+          this.size,
+          rock.x,
+          rock.y,
+          rock.size,
+          rock.size
+        )
+      ) {
+        collidedY = true;
+      }
+    }
+    if (!collidedY) {
+      this.active = false;
+    }
   }
 
   //Lets the projectile take shape, and fly, now functions with weaponAim();
@@ -38,9 +84,58 @@ class PlayerProjectile {
       this.active = false;
     }
 
-    //Green energy projectile
+    //Displays yellow bullets
     if (this.active) {
       image(playerShotImg, this.x, this.y, this.size, this.size);
+    }
+  }
+
+  breakBullet(cave) {
+    let tempx = this.x + this.vx;
+    let collidedX = false;
+    for (let i = 0; i < rockObstacleOut.length; i++) {
+      let rock = rockObstacleOut[i];
+      if (
+        collideRectRect(
+          tempx,
+          this.y,
+          this.size,
+          this.size,
+          rock.x,
+          rock.y,
+          rock.size,
+          rock.size
+        )
+      ) {
+        collidedX = true;
+      }
+    }
+    if (!collidedX) {
+      this.active = false;
+    }
+
+    //Then this time, it checks the y-axis between them
+    let tempy = this.y + this.vy;
+    let collidedY = false;
+    for (let i = 0; i < rockObstacleOut.length; i++) {
+      let rock = rockObstacleOut[i];
+      if (
+        collideRectRect(
+          this.x,
+          tempy,
+          this.size,
+          this.size,
+          rock.x,
+          rock.y,
+          rock.size,
+          rock.size
+        )
+      ) {
+        collidedY = true;
+      }
+    }
+    if (!collidedY) {
+      this.active = false;
     }
   }
 }
