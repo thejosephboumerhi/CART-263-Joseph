@@ -113,7 +113,6 @@ function setup() {
     let x = random(0, width);
     let y = random(0, height);
     let enemy = new EnemySoldier(x, y);
-    placeEnemy(enemy, rockObstacleOut);
     enemyGroup.push(enemy);
   }
   //
@@ -128,7 +127,6 @@ function setup() {
     let x = random(0, width);
     let y = random(0, height);
     let heals = new HealingItem(x, y);
-    placeItem(heals, rockObstacleOut);
     healItemOut.push(heals);
   }
 
@@ -235,7 +233,6 @@ function gameplay() {
         let playerProjectile = playerProjectileOut[j];
         playerProjectile.projectile(enemy);
         playerProjectile.collision(enemy);
-        playerProjectile.breakBullet(cave);
         if (playerProjectile.active === false) {
           playerProjectileOut.splice(j, 1);
         }
@@ -258,7 +255,7 @@ function gameplay() {
   //Spawns in multiple squares of rocks that obstruct the player's path
   for (let i = 0; i < rockObstacleOut.length; i++) {
     let cave = rockObstacleOut[i];
-    if (cave.appear) {
+    if (cave.active) {
       let x = random(0, width);
       let y = random(0, height);
       cave.displayStructure();
@@ -287,6 +284,7 @@ function waveSpawn() {
       let x = random(0, width);
       let y = random(0, height);
       let enemy = new EnemySoldier(x, y);
+      placeEnemy(enemy, rockObstacleOut);
       enemyGroup.push(enemy);
     }
   }
@@ -301,6 +299,7 @@ function itemSpawn() {
       let x = random(0, width);
       let y = random(0, height);
       let heals = new HealingItem(x, y);
+      placeItem(heals, rockObstacleOut);
       healItemOut.push(heals);
     }
   }
@@ -310,10 +309,10 @@ function itemSpawn() {
 //Samuel gave me this code
 //Looks for distance for healing item(s) to spawn away from rocks, used in setup
 function placeItem(heals, rockObstacleOut) {
-  let positionFound = false;
+  let itemPositionFound = false;
 
   // the following code will loop until positionFound becomes true
-  while (positionFound == false) {
+  while (itemPositionFound == false) {
     // we start by picking a new position for the item
     heals.x = random() * width;
     heals.y = random() * height;
@@ -323,14 +322,14 @@ function placeItem(heals, rockObstacleOut) {
     // look through each object in the list
     for (let i = 0; i < rockObstacleOut.length; i++) {
       // calculate the distance from the player to that object
-      let d = dist(
+      let healSpacing = dist(
         heals.x,
         heals.y,
         rockObstacleOut[i].x,
         rockObstacleOut[i].y
       );
       // then we check if that distance is shorter than the acceptable distance
-      if (d < 200) {
+      if (healSpacing < 225) {
         itemOverlapsAnObject = true;
       }
     }
@@ -341,16 +340,17 @@ function placeItem(heals, rockObstacleOut) {
     //value (the position is 'found' if there is no overlap with any object once
     //positionFound becomes true, the while() loop stops and the item has a
     //new random position)
-    positionFound = !itemOverlapsAnObject;
+    itemPositionFound = !itemOverlapsAnObject;
   }
+  console.log(itemPositionFound);
 }
 
 //Looks for distance for enemy to spawn away from rocks, used in setup
-function placePlayer(player, objectList) {
-  let positionFound = false;
+function placePlayer(player, rockObstacleOut) {
+  let playerPositionFound = false;
 
   // the following code will loop until positionFound becomes true
-  while (positionFound == false) {
+  while (playerPositionFound == false) {
     // we start by picking a new position for the item
     player.x = random() * width;
     player.y = random() * height;
@@ -359,14 +359,14 @@ function placePlayer(player, objectList) {
     // look through each object in the list
     for (let i = 0; i < rockObstacleOut.length; i++) {
       // calculate the distance from the player to that object
-      let d = dist(
+      let playerSpacing = dist(
         player.x,
         player.y,
         rockObstacleOut[i].x,
         rockObstacleOut[i].y
       );
       // then we check if that distance is shorter than the acceptable distance
-      if (d < 250) {
+      if (playerSpacing < 225) {
         playerOverlapsAnObject = true;
       }
     }
@@ -377,16 +377,17 @@ function placePlayer(player, objectList) {
     //value (the position is 'found' if there is no overlap with any object once
     //positionFound becomes true, the while() loop stops and the player has a
     //new random position)
-    positionFound = !playerOverlapsAnObject;
+    playerPositionFound = !playerOverlapsAnObject;
   }
+  console.log(playerPositionFound);
 }
 
 //Looks for distance for enemy to spawn away from rocks, used in setup
 function placeEnemy(enemy, rockObstacleOut) {
-  let positionFound = false;
+  let enemyPositionFound = false;
 
-  // the following code will loop until positionFound becomes true
-  while (positionFound == false) {
+  // the following code will loop until enemyPositionFound becomes true
+  while (enemyPositionFound == false) {
     // we start by picking a new position for the item
     enemy.x = random() * width;
     enemy.y = random() * height;
@@ -395,26 +396,27 @@ function placeEnemy(enemy, rockObstacleOut) {
     // look through each object in the list
     for (let i = 0; i < rockObstacleOut.length; i++) {
       // calculate the distance from the player to that object
-      let d = dist(
+      let enemySpacing = dist(
         enemy.x,
         enemy.y,
         rockObstacleOut[i].x,
         rockObstacleOut[i].y
       );
       // then we check if that distance is shorter than the acceptable distance
-      if (d < 250) {
+      if (enemySpacing < 225) {
         enemyOverlapsAnObject = true;
       }
     }
 
     //now that we've checked each object,
     //the boolean enemyOverlapsAnObject will be true is there was contact with
-    //an object. we can now update positionFound to be the opposite of that
+    //an object. we can now update enemyPositionFound to be the opposite of that
     //value (the position is 'found' if there is no overlap with any object once
-    //positionFound becomes true, the while() loop stops and the enemy has a
+    //enemyPositionFound becomes true, the while() loop stops and the enemy has a
     //new random position)
-    positionFound = !enemyOverlapsAnObject;
+    enemyPositionFound = !enemyOverlapsAnObject;
   }
+  console.log(enemyPositionFound);
 }
 
 //Mouse presses for menu buttons, and to fire in game state, dependant on states

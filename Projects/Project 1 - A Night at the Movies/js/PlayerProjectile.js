@@ -21,51 +21,18 @@ class PlayerProjectile {
       this.active = false;
       this.fired = false;
     }
-    let tempx = this.x + this.vx;
-    let collidedX = false;
-    for (let i = 0; i < rockObstacleOut.length; i++) {
-      let rock = rockObstacleOut[i];
-      if (
-        collideRectRect(
-          tempx,
-          this.y,
-          this.size,
-          this.size,
-          rock.x,
-          rock.y,
-          rock.size,
-          rock.size
-        )
-      ) {
-        collidedX = true;
-      }
-    }
-    if (!collidedX) {
-      this.active = false;
-    }
+  }
 
-    //Then this time, it checks the y-axis between them
-    let tempy = this.y + this.vy;
-    let collidedY = false;
-    for (let i = 0; i < rockObstacleOut.length; i++) {
-      let rock = rockObstacleOut[i];
-      if (
-        collideRectRect(
-          this.x,
-          tempy,
-          this.size,
-          this.size,
-          rock.x,
-          rock.y,
-          rock.size,
-          rock.size
-        )
-      ) {
-        collidedY = true;
-      }
-    }
-    if (!collidedY) {
+  collisionOnStone(cave) {
+    let shatter = dist(this.x, this.y, cave.x, cave.y);
+    if (
+      this.fired &&
+      cave.active &&
+      shatter < this.size / 1.5 + cave.size / 2
+    ) {
+      // Kill the enemy that said bullet hit
       this.active = false;
+      this.fired = false;
     }
   }
 
@@ -86,56 +53,8 @@ class PlayerProjectile {
 
     //Displays yellow bullets
     if (this.active) {
+      imageMode(CORNER);
       image(playerShotImg, this.x, this.y, this.size, this.size);
-    }
-  }
-
-  breakBullet(cave) {
-    let tempx = this.x + this.vx;
-    let collidedX = false;
-    for (let i = 0; i < rockObstacleOut.length; i++) {
-      let rock = rockObstacleOut[i];
-      if (
-        collideRectRect(
-          tempx,
-          this.y,
-          this.size,
-          this.size,
-          rock.x,
-          rock.y,
-          rock.size,
-          rock.size
-        )
-      ) {
-        collidedX = true;
-      }
-    }
-    if (!collidedX) {
-      this.active = false;
-    }
-
-    //Then this time, it checks the y-axis between them
-    let tempy = this.y + this.vy;
-    let collidedY = false;
-    for (let i = 0; i < rockObstacleOut.length; i++) {
-      let rock = rockObstacleOut[i];
-      if (
-        collideRectRect(
-          this.x,
-          tempy,
-          this.size,
-          this.size,
-          rock.x,
-          rock.y,
-          rock.size,
-          rock.size
-        )
-      ) {
-        collidedY = true;
-      }
-    }
-    if (!collidedY) {
-      this.active = false;
     }
   }
 }

@@ -19,8 +19,21 @@ class EnemyProjectile {
     let damage = dist(this.x, this.y, player.x, player.y);
     if (this.fired && damage < this.size / 2 + player.size / 2) {
       //Hurt the player
-      player.healthPercent -= 15;
+      player.healthPercent -= 25;
       player.invinciTime = frameCount + 30;
+      this.active = false;
+      this.fired = false;
+    }
+  }
+
+  collisionOnStone(cave) {
+    let shatter = dist(this.x, this.y, cave.x, cave.y);
+    if (
+      this.fired &&
+      cave.active &&
+      shatter < this.size / 1.5 + cave.size / 2
+    ) {
+      // Kill the enemy that said bullet hit
       this.active = false;
       this.fired = false;
     }
@@ -43,6 +56,7 @@ class EnemyProjectile {
 
     //Displays grey bullet(s)
     if (this.fired) {
+      imageMode(CORNER);
       image(enemyShotImg, this.x, this.y, this.size, this.size);
     }
   }

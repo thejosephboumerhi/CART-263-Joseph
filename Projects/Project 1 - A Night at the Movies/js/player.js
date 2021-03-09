@@ -55,8 +55,8 @@ class Player {
           this.size,
           rock.x,
           rock.y,
-          rock.size,
-          rock.size
+          rock.size / 1.5,
+          rock.size / 1.5
         )
       ) {
         collidedX = true;

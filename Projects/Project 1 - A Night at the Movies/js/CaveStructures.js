@@ -5,7 +5,7 @@ class CaveStructures {
     this.x = x;
     this.y = y;
     this.size = 125;
-    this.appear = true;
+    this.active = true;
   }
 
   //Display rock cube/part of tunnel
@@ -20,11 +20,11 @@ class CaveStructures {
   bulletStuffing() {
     for (let j = playerProjectileOut.length - 1; j >= 0; j--) {
       let playerProjectile = playerProjectileOut[j];
-      playerProjectile.collision(this);
+      playerProjectile.collisionOnStone(this);
     }
     for (let e = enemyProjectileOut.length - 1; e >= 0; e--) {
       let enemyProjectile = enemyProjectileOut[e];
-      enemyProjectile.collision(this);
+      enemyProjectile.collisionOnStone(this);
     }
   }
 }
