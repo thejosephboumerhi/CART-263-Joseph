@@ -7,6 +7,7 @@ I based this game off "Rambo: Last Blood", reused
 with the addition of new things, and some removals to fit a different feel
 The scene in which this game is trying to emulate is from 1:08:17 to 1:18:06,
 which is a final confrontation on Rambo's farm, and underground maze.
+This is a TDS.
 **************************************************/
 `use strict`;
 //Starting state, the main menu
