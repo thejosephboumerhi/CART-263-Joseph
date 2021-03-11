@@ -23,6 +23,7 @@ class PlayerProjectile {
     }
   }
 
+  //Break player bullets if they hit any rocks
   collisionOnStone(cave) {
     let shatter = dist(this.x, this.y, cave.x, cave.y);
     if (

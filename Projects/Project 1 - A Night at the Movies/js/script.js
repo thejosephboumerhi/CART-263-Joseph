@@ -7,7 +7,7 @@ I based this game off "Rambo: Last Blood", reused
 with the addition of new things, and some removals to fit a different feel
 The scene in which this game is trying to emulate is from 1:08:17 to 1:18:06,
 which is a final confrontation on Rambo's farm, and underground maze.
-This is a TDS.
+This is a Top-Down shooter.
 **************************************************/
 `use strict`;
 //Starting state, the main menu
@@ -23,6 +23,7 @@ let howToPlayFont;
 let deathFont;
 
 //Instructions for instructionsTab() function
+//Removed tip for dash, since it's removed
 let instructions = `Press [WASD] to move around
 
 Use Mouse to look around, and left click to shoot`;
@@ -39,18 +40,18 @@ let playerProjectileShot = 1;
 let enemyProjectileOut = [];
 let enemyProjectileShot = 1;
 
-//Healing item array, spawns in healing item for limited time
+//(New) Healing item array, spawns in healing item for limited time
 let healItemOut = [];
 let healItemAvailable = 2;
 
-//Rock obstacle array, spawns walls/cover
+//(New) Rock obstacle array, spawns walls/cover
 let rockObstacleOut = [];
 let rockObstacleSetup = 4;
 
 //Images for the game, made by me using Piskel, an online pixel editor
 let posterThumbnail;
 
-//Images/Pixel for characters
+//Images/Pixel for characters (same var, but new images)
 let playerImg;
 let playerRunImg;
 let cursorImg;
@@ -63,7 +64,7 @@ let enemyShotImg;
 let rockImg;
 let healingPrescriptionImg;
 
-//Preloads assets
+//Preloads assets (new fonts)
 function preload() {
   //All fonts from daFont
   //Switched to different fonts to fit movie visuals/theme
@@ -86,8 +87,7 @@ function preload() {
   //7M&imgdii=RCHTfPgZMOJepM
   posterThumbnail = loadImage("assets/images/RamboLastBloodMovieThumbnail.jpg");
 
-  //Pixel Sprites
-  //Retained usual names for sake of easily switching assets
+  //Pixel Sprites (Retained usual names for sake of easily switching assets)
   //For the player
   playerImg = loadImage("assets/images/StalloneStanding.png");
   playerRunImg = loadImage("assets/images/StalloneRunning.gif");
@@ -108,7 +108,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   player = new Player();
   placePlayer(player, rockObstacleOut);
-  //
+  //Setups up enemies (class name changed)
   let i = 0;
   for (i = 0; i < enemyNum; i++) {
     let x = random(0, width);
@@ -116,14 +116,14 @@ function setup() {
     let enemy = new EnemySoldier(x, y);
     enemyGroup.push(enemy);
   }
-  //
+  //(New) Setups rock structures that forms a map layout
   for (i = 0; i < rockObstacleSetup; i++) {
     let x = random(0, width);
     let y = random(0, height);
     let cave = new CaveStructures(x, y);
     rockObstacleOut.push(cave);
   }
-  //
+  //(New) Setups healing items, to compensate for no auto-health regen
   for (i = 0; i < healItemAvailable; i++) {
     let x = random(0, width);
     let y = random(0, height);
@@ -308,7 +308,9 @@ function itemSpawn() {
 
 //Placement checks, makes sure things are well spaced on setup
 //Samuel gave me this code
-//Looks for distance for healing item(s) to spawn away from rocks, used in setup
+//Looks for distance for healing player/items/enemies to spawn away from rocks,
+//used in setup and in spawn functions, lower chances of things spawning into
+//the rocks
 function placeItem(heals, rockObstacleOut) {
   let itemPositionFound = false;
 
@@ -343,7 +345,6 @@ function placeItem(heals, rockObstacleOut) {
     //new random position)
     itemPositionFound = !itemOverlapsAnObject;
   }
-  console.log(itemPositionFound);
 }
 
 //Looks for distance for enemy to spawn away from rocks, used in setup
@@ -356,8 +357,8 @@ function placePlayer(player, rockObstacleOut) {
     player.x = random() * width;
     player.y = random() * height;
 
-    let playerOverlapsAnObject = false; // we will use this variable to keep track of any overlaps
-    // look through each object in the list
+    let playerOverlapsAnObject = false; // we will use this variable to keep
+    //track of any overlaps look through each object in the list
     for (let i = 0; i < rockObstacleOut.length; i++) {
       // calculate the distance from the player to that object
       let playerSpacing = dist(
@@ -380,7 +381,6 @@ function placePlayer(player, rockObstacleOut) {
     //new random position)
     playerPositionFound = !playerOverlapsAnObject;
   }
-  console.log(playerPositionFound);
 }
 
 //Looks for distance for enemy to spawn away from rocks, used in setup
@@ -393,8 +393,8 @@ function placeEnemy(enemy, rockObstacleOut) {
     enemy.x = random() * width;
     enemy.y = random() * height;
 
-    let enemyOverlapsAnObject = false; // we will use this variable to keep track of any overlaps
-    // look through each object in the list
+    let enemyOverlapsAnObject = false; // we will use this variable to keep
+    //track of any overlaps look through each object in the list
     for (let i = 0; i < rockObstacleOut.length; i++) {
       // calculate the distance from the player to that object
       let enemySpacing = dist(
@@ -413,11 +413,10 @@ function placeEnemy(enemy, rockObstacleOut) {
     //the boolean enemyOverlapsAnObject will be true is there was contact with
     //an object. we can now update enemyPositionFound to be the opposite of that
     //value (the position is 'found' if there is no overlap with any object once
-    //enemyPositionFound becomes true, the while() loop stops and the enemy has a
+    //enemyPositionFound becomes true, the while() loop stops and the enemy has
     //new random position)
     enemyPositionFound = !enemyOverlapsAnObject;
   }
-  console.log(enemyPositionFound);
 }
 
 //Mouse presses for menu buttons, and to fire in game state, dependant on states
