@@ -1,8 +1,11 @@
 /**
-A6 - Raving Redactionist
+E6 - Raving Redactionist++
 Joseph Boumerhi
 
-Fun "russian" hacking document
+I decided to look for some copypastas on Reddit, take some fairly appropriate
+ones that I liked, changed and pasted them in the places of the "Lorem Ipsum"
+
+Links for each copypasta are in index.html above each of their <p>s
 */
 
 "use strict";
@@ -22,7 +25,7 @@ function revelation() {
 function attemptReveal() {
   let r = Math.random();
   if (r < 0.1) {
-    $().removeClass(`redacted`);
-    $().addClass(`revealed`);
+    $(this).removeClass(`redacted`);
+    $(this).addClass(`revealed`);
   }
 }
