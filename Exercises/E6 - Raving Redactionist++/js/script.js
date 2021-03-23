@@ -9,7 +9,7 @@ Links for each copypasta are in index.html above each of their <p>s
 */
 
 "use strict";
-
+$(`#title`).addClass(`title`);
 $(`.top-secret`).on(`click`, redact);
 setInterval(revelation, 500);
 

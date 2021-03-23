@@ -1,9 +1,16 @@
 #copypasta-hell {
-  background-color: ##ff6200;
   font-family: monospace;
   font-size: 1.25rem;
   width: 50vw;
   margin: auto;
+}
+
+.title {
+  background-color: green;
+}
+
+.header {
+  background-color: yellow;
 }
 
 .redacted {
@@ -15,4 +22,15 @@
   color: red;
   font-weight: bold;
   text-decoration: underline;
+}
+
+#first-pasta {
+}
+#second-pasta {
+}
+#third-pasta {
+}
+#fourth-pasta {
+}
+#fifth-pasta {
 }
