@@ -11,6 +11,7 @@ Links for each copypasta are in index.html above each of their <p>s
 "use strict";
 $(`#title`).addClass(`title`);
 $(`.top-secret`).on(`click`, redact);
+//$(`.revealed`).animate {}
 setInterval(revelation, 500);
 
 function redact(event) {

@@ -1,16 +1,33 @@
 #copypasta-hell {
-  font-family: monospace;
+  font-family: serif;
   font-size: 1.25rem;
   width: 50vw;
   margin: auto;
+  color: black;
+}
+#first-pasta {
+  color: darkblue;
+}
+#second-pasta {
+  color: green;
+}
+#third-pasta {
+  color: magenta;
+}
+#fourth-pasta {
+  color: purple;
+}
+#fifth-pasta {
+  color: darkred;
 }
 
 .title {
-  background-color: green;
+  background-color: black;
+  color: white;
 }
 
 .header {
-  background-color: yellow;
+  background-color: tan;
 }
 
 .redacted {
@@ -19,18 +36,12 @@
 }
 
 .revealed {
-  color: red;
+  color: orange;
   font-weight: bold;
+  font-style: italic;
   text-decoration: underline;
 }
 
-#first-pasta {
-}
-#second-pasta {
-}
-#third-pasta {
-}
-#fourth-pasta {
-}
-#fifth-pasta {
+body {
+  background-color: grey;
 }
