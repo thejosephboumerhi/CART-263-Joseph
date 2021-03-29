@@ -7,6 +7,9 @@ Poem
 
 "use strict";
 
+//Dana showed me (should make more use of looking at things in general),
+//https://pippinbarr.github.io/cart263-2021/topics/jquery-uI/jquery-ui-widgets.html
+//Brings up dialog box on startup
 $(`#instruction-dialog`).dialog({
   modal: true,
 });
