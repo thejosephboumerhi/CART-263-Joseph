@@ -11,12 +11,19 @@ class Boot extends Phaser.Scene {
       `assets/images/PlayerSideShooterCharacter_Idle.gif`
     );
 
+    this.load.image(``, `assets/images/`);
+
+    this.load.image(``, `assets/images/`);
+
     this.load.on(`complete`, () => {
       this.scene.start(`play`);
     });
   }
 
-  create() {}
+  create() {
+    let loadingStyle = {};
+    let loadingDescription = `Loading >>>`;
+  }
 
   update() {}
 }

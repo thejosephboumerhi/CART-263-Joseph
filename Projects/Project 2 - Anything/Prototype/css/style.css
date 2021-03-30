@@ -1,6 +1,5 @@
-/*********************************************
-
-Here is a description of any special CSS used.
-By default that's nothing.
-
-**********************************************/
+body {
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}

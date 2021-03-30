@@ -14,11 +14,13 @@ let config = {
   physics: {
     default: `arcade`,
   },
+
+  //Scenes behaves like states
   scene: [Boot, Play],
 };
 
 //Game Variables
-let player;
+let playerRobot;
 let staticPlatform;
 let movingPlatform;
 let timerPlatform;
