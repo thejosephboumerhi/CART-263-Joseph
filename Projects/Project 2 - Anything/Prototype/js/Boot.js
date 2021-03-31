@@ -6,14 +6,23 @@ class Boot extends Phaser.Scene {
   }
   preload() {
     //For assets
-    this.load.image(
+    this.load.spritesheet(
       `avatar`,
-      `assets/images/PlayerSideShooterCharacter_Idle.gif`
+      `assets/images/PlayerSideShooterCharacter_IdleSheet.png`,
+      { frameWidth: 200, frameHeight: 200, endFrame: 4 }
     );
 
-    this.load.image(``, `assets/images/`);
+    this.load.spritesheet(
+      `loadingIcon`,
+      `assets/images/BatteryLoadingSheet.png`,
+      { frameWidth: 200, frameHeight: 200, endFrame: 5 }
+    );
 
-    this.load.image(``, `assets/images/`);
+    this.load.spritesheet(`tile1`, `assets/images/PipelineTileSheet.png`, {
+      frameWidth: 200,
+      frameHeight: 200,
+      endFrame: 3,
+    });
 
     this.load.on(`complete`, () => {
       this.scene.start(`play`);
@@ -21,9 +30,16 @@ class Boot extends Phaser.Scene {
   }
 
   create() {
-    let loadingStyle = {};
+    let loadingStyle = {
+      fontFamily: `serif`,
+      fontSize: `40px`,
+      color: `#fffff`,
+    };
     let loadingDescription = `Loading >>>`;
+    this.add.text(100, 100, loadingDescription, loadingStyle);
   }
 
-  update() {}
+  update() {
+    this.add.image(200, 200, `loadingIcon`);
+  }
 }

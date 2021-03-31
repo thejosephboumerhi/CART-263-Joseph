@@ -9,8 +9,8 @@ This is the prototype stage of my project.
 
 let config = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  width: 1200,
+  height: 800,
   physics: {
     default: `arcade`,
   },
@@ -19,8 +19,7 @@ let config = {
   scene: [Boot, Play],
 };
 
-//Game Variables
-let playerRobot;
+//Game Variable(s)
 let staticPlatform;
 let movingPlatform;
 let timerPlatform;
