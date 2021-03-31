@@ -13,6 +13,10 @@ let config = {
   height: 800,
   physics: {
     default: `arcade`,
+    arcade: {
+      gravity: { y: 300 },
+      debug: true,
+    },
   },
 
   //Scenes behaves like states

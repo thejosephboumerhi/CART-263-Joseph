@@ -26,29 +26,22 @@ class Play extends Phaser.Scene {
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
+    //Tiles setting to make basic floor and ledge
     this.wall = this.physics.add.image(100, 600, `tile1`);
+    this.wall.body.allowGravity = false;
     this.wall = this.physics.add.image(300, 600, `tile1`);
-    this.wall = this.physics.add.image(500, 600, `tile1`);
+    this.wall.body.allowGravity = false;
     this.wall = this.physics.add.image(700, 600, `tile1`);
+    this.wall.body.allowGravity = false;
     this.wall = this.physics.add.image(900, 600, `tile1`);
+    this.wall.body.allowGravity = false;
+    this.wall = this.physics.add.image(900, 400, `tile1`);
+    this.wall.body.allowGravity = false;
     this.wall.setImmovable(true);
-
-    //Will probably be scrapped to be switched with a tilemap using "Tiled"
-    this.walls = this.physics.add.group({
-      key: `walls`,
-      immovable: true,
-      quantity: 24,
-    });
-
-    this.walls.children.each(function (wall) {
-      let x = this.sys.canvas.width;
-      let y = this.sys.canvas.height;
-      wall.setPosition(x, y);
-      wall.setTint(0xdd3333);
-    }, this);
 
     this.collectible = this.physics.add.image(100, 400, `tile1`);
     this.collectible.setTint(0x33dd33);
+    this.collectible.body.allowGravity = false;
 
     this.physics.add.collider(this.avatar, this.wall);
     this.physics.add.overlap(
@@ -99,17 +92,25 @@ class Play extends Phaser.Scene {
   }
 
   update() {
+    //Player Movement
+    //For horizontal movement
     this.avatar.setVelocity(0);
     if (this.cursors.left.isDown) {
-      this.avatar.setVelocityX(-175);
+      this.avatar.setVelocityX(-275);
     } else if (this.cursors.right.isDown) {
-      this.avatar.setVelocityX(175);
+      this.avatar.setVelocityX(275);
     } else {
       this.avatar.setVelocityX(0);
     }
 
+    //For vertical movement
     if (this.cursors.space.isDown) {
-      this.avatar.setVelocityY(175);
+      this.avatar.setVelocityY(-175);
+    }
+    //I could do something interesting with down and space,
+    //like doing a jump and forcing yourself t0 falling
+    else if (this.cursors.down.isDown) {
+      this.avatar.setVelocityY(400);
     } else {
       this.avatar.setVelocityY(0);
     }

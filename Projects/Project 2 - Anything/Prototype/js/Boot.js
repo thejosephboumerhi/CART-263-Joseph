@@ -23,6 +23,10 @@ class Boot extends Phaser.Scene {
       frameHeight: 200,
       endFrame: 3,
     });
+    //this.load.spritesheet(``,`assets/images/`{frameWidth:,frameHeight:,endFrame:,});
+    //this.load.spritesheet(``,`assets/images/`{frameWidth:,frameHeight:,endFrame:,});
+    //this.load.spritesheet(``,`assets/images/`{frameWidth:,frameHeight:,endFrame:,});
+    //this.load.spritesheet(``,`assets/images/`{frameWidth:,frameHeight:,endFrame:,});
 
     this.load.on(`complete`, () => {
       this.scene.start(`play`);
