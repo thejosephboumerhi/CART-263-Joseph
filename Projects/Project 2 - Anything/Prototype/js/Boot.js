@@ -23,7 +23,15 @@ class Boot extends Phaser.Scene {
       frameHeight: 200,
       endFrame: 3,
     });
-    //this.load.spritesheet(``,`assets/images/`{frameWidth:,frameHeight:,endFrame:,});
+    this.load.spritesheet(
+      `lavaHazard`,
+      `assets/images/BasicLavaTileSheet.png`,
+      {
+        frameWidth: 200,
+        frameHeight: 200,
+        endFrame: 3,
+      }
+    );
     //this.load.spritesheet(``,`assets/images/`{frameWidth:,frameHeight:,endFrame:,});
     //this.load.spritesheet(``,`assets/images/`{frameWidth:,frameHeight:,endFrame:,});
     //this.load.spritesheet(``,`assets/images/`{frameWidth:,frameHeight:,endFrame:,});

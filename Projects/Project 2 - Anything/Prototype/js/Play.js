@@ -39,6 +39,11 @@ class Play extends Phaser.Scene {
     this.wall.body.allowGravity = false;
     this.wall.setImmovable(true);
 
+    //Will test damage from a environmental source
+    this.hazard = this.physics.add.image(500, 600, `lavaHazard`);
+    this.hazard.body.allowGravity = false;
+    //this.hazard.add.overlap();
+
     this.collectible = this.physics.add.image(100, 400, `tile1`);
     this.collectible.setTint(0x33dd33);
     this.collectible.body.allowGravity = false;
@@ -89,6 +94,16 @@ class Play extends Phaser.Scene {
       frameRate: 30,
       repeat: -1,
     });
+
+    this.anims.create({
+      key: `damage-hazard1`,
+      frames: this.anims.generateFrameNumbers(`lavaHazard`, {
+        start: 0,
+        end: 2,
+      }),
+      frameRate: 30,
+      repeat: -1,
+    });
   }
 
   update() {
@@ -108,7 +123,7 @@ class Play extends Phaser.Scene {
       this.avatar.setVelocityY(-175);
     }
     //I could do something interesting with down and space,
-    //like doing a jump and forcing yourself t0 falling
+    //like doing a jump and forcing yourself down faster
     else if (this.cursors.down.isDown) {
       this.avatar.setVelocityY(400);
     } else {
