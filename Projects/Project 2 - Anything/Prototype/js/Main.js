@@ -7,6 +7,7 @@ This is the prototype stage of my project.
 
 "use strict";
 
+//Configs the game engine, sets up the canvas, and physics and debug if needed
 let config = {
   type: Phaser.AUTO,
   width: 1200,
@@ -24,9 +25,5 @@ let config = {
 };
 
 //Game Variable(s)
-let staticPlatform;
-let movingPlatform;
-let timerPlatform;
-let destructivePlatform;
 
 let game = new Phaser.Game(config);

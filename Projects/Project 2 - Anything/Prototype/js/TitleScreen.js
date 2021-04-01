@@ -6,5 +6,7 @@ class TitleScreen extends Phaser.Scene {
   }
 
   create() {}
-  update() {}
+  update() {
+    //if (this.cursor.enter.isDown) {}
+  }
 }

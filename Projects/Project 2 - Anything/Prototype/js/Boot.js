@@ -9,7 +9,7 @@ class Boot extends Phaser.Scene {
     this.load.spritesheet(
       `avatar`,
       `assets/images/PlayerSideShooterCharacter_IdleSheet.png`,
-      { frameWidth: 200, frameHeight: 200, endFrame: 4 }
+      { frameWidth: 50, frameHeight: 110, endFrame: 4 }
     );
 
     this.load.spritesheet(
@@ -32,9 +32,12 @@ class Boot extends Phaser.Scene {
         endFrame: 3,
       }
     );
-    //this.load.spritesheet(``,`assets/images/`{frameWidth:,frameHeight:,endFrame:,});
-    //this.load.spritesheet(``,`assets/images/`{frameWidth:,frameHeight:,endFrame:,});
-    //this.load.spritesheet(``,`assets/images/`{frameWidth:,frameHeight:,endFrame:,});
+    this.load.image(`playerBullet`, `assets/images/StockBullet.png`);
+    this.load.spritesheet(
+      `healBattery`,
+      `assets/images/HealingBatterySheet.png`,
+      { frameWidth: 50, frameHeight: 100, endFrame: 4 }
+    );
 
     this.load.on(`complete`, () => {
       this.scene.start(`play`);
