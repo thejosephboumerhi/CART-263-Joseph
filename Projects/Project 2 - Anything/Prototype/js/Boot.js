@@ -32,11 +32,11 @@ class Boot extends Phaser.Scene {
         endFrame: 3,
       }
     );
-    this.load.image(`playerBullet`, `assets/images/StockBullet.png`);
+    this.load.image(`mainBullet`, `assets/images/StockBullet.png`);
     this.load.spritesheet(
       `healBattery`,
       `assets/images/HealingBatterySheet.png`,
-      { frameWidth: 50, frameHeight: 100, endFrame: 4 }
+      { frameWidth: 45, frameHeight: 100, endFrame: 4 }
     );
 
     this.load.on(`complete`, () => {

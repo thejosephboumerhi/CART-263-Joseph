@@ -1,5 +1,5 @@
 /**
-P2 - Anything: Part 1
+P2 - Anything: Part 1 - Prototype
 Joseph Boumerhi
 
 This is the prototype stage of my project.
@@ -21,7 +21,7 @@ let config = {
   },
 
   //Scenes behaves like states
-  scene: [Boot, Play],
+  scene: [Boot, Play, GameOver],
 };
 
 //Game Variable(s)
