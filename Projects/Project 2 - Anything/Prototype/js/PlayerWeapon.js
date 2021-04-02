@@ -1,5 +1,7 @@
 let playerLaser;
 
+//Samuel and Me are working through pasted to see what works and what I could
+//use to shoot bullets
 function createPlayerLaser() {
   // Create the group using the group factory
   playerLaser = game.add.group();

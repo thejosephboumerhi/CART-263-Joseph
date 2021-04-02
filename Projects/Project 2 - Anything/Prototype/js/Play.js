@@ -1,5 +1,5 @@
 //This will be the basic little room to showcase a prototype, will
-//likely turn into a tutorial level into
+//likely turn into a tutorial level in the final
 class Play extends Phaser.Scene {
   constructor() {
     super({
@@ -7,19 +7,28 @@ class Play extends Phaser.Scene {
     });
   }
 
+  //Creates/Sets things once
   create() {
-    //Current font style, subject to change and be multiples later
+    //Different styles for font and stuff
     let gameStyle1 = {
       fontFamily: `serif`,
       fontSize: `40px`,
       color: `#fcba03`,
     };
 
+    let gameStyle2 = {
+      fontFamily: `sans-serif`,
+      fontSize: `30px`,
+      color: `#ffa099`,
+    };
+
     this.physics.world.gravity.y = 1500;
 
     //Will have some text for inform
     let protoRoomDescription = `Disruptor Defector`;
+    let instruc = `Left, Right to move, Down to fast-fall, Space to Jump`;
     this.add.text(500, 25, protoRoomDescription, gameStyle1);
+    this.add.text(500, 60, instruc, gameStyle2);
     //Create player avatar
     this.avatar = this.physics.add.sprite(125, 125, `avatar`);
     this.avatar.setGravityY(500);
@@ -28,9 +37,11 @@ class Play extends Phaser.Scene {
 
     this.avatar.play(`avatar-idle`);
 
+    //Enables keyboard to be used
     this.cursors = this.input.keyboard.createCursorKeys();
 
-    //Tiles setting to make basic floor and ledge, will changed later using Tiled
+    //Tiles setting to make basic floor and ledge, will changed later using
+    //Tiled, also have collision to be stood on
     this.wall = this.physics.add.image(100, 600, `tile1`);
     this.wall.body.allowGravity = false;
     this.wall.setImmovable(true);
@@ -51,7 +62,6 @@ class Play extends Phaser.Scene {
     this.wall.body.allowGravity = false;
     this.wall.setImmovable(true);
     this.physics.add.collider(this.avatar, this.wall);
-
     //Will test damage from a environmental source
     this.hazard = this.physics.add.image(500, 600, `lavaHazard`);
     this.hazard.body.allowGravity = false;
@@ -65,9 +75,11 @@ class Play extends Phaser.Scene {
       this
     );
 
+    //Health Pick-up
     this.collectible = this.physics.add.image(100, 400, `healBattery`);
     this.collectible.body.allowGravity = false;
 
+    //Overlap for pick-up
     this.physics.add.collider(this.avatar, this.wall);
     this.physics.add.overlap(
       this.avatar,
@@ -77,6 +89,7 @@ class Play extends Phaser.Scene {
       this
     );
 
+    //OoB world collision
     this.avatar.setCollideWorldBounds(true);
 
     this.health = 100;
@@ -86,6 +99,9 @@ class Play extends Phaser.Scene {
       color: `#00ff00`,
     });
 
+    //This will be the mechanic that the game will revolve around,
+    //essentially, the more you move, the more you get rewarded, it will
+    //buff you in different ways, ex: more move speed, and bigger bullets
     this.discharge = 0;
     this.dischargeDisplay = this.add.text(
       25,
@@ -97,9 +113,12 @@ class Play extends Phaser.Scene {
         color: `#fc0303`,
       }
     );
-    this.createPlayerLaser();
+    //this.createPlayerLaser();
   }
 
+  //Code pasted from https://www.codecaptain.io/blog/game-development/shooting-
+  //bullets-using-phaser-groups/518, Samuel was trying help me set player bullets.
+  //Still need help setting it up
   createPlayerLaser() {
     // Create the group using the group factory
     playerLaser = this.add.group();
@@ -139,6 +158,8 @@ class Play extends Phaser.Scene {
     this.healthDisplay.setText(`Health:${this.health}`);
   }
 
+  //Will hold and create the animations, some of the spritesheet might need to
+  //be edited, I think
   createAnimations() {
     this.anims.create({
       key: `avatar-moving`,
@@ -191,15 +212,16 @@ class Play extends Phaser.Scene {
     });
   }
 
+  //Continues running things
   update() {
     //Player Movement(will try to remap things for final)
     //For horizontal movement
     if (this.cursors.left.isDown) {
-      this.avatar.setVelocityX(-275 - this.discharge);
+      this.avatar.setVelocityX(-275 - this.discharge * 1.5);
       this.discharge += 1;
       this.dischargeDisplay.setText(`Discharge:${this.discharge}`);
     } else if (this.cursors.right.isDown) {
-      this.avatar.setVelocityX(275 + this.discharge);
+      this.avatar.setVelocityX(275 + this.discharge * 1.5);
       this.discharge += 1;
       this.dischargeDisplay.setText(`Discharge:${this.discharge}`);
     } else {
@@ -210,14 +232,17 @@ class Play extends Phaser.Scene {
 
     //For vertical movement
     if (this.cursors.space.isDown && this.avatar.body.touching.down) {
-      this.avatar.setVelocityY(-700);
+      this.avatar.setVelocityY(-700 - this.discharge * 1.5);
     }
     //I could do something interesting with down and space,
     //like doing a jump and forcing yourself down faster
     else if (this.cursors.down.isDown) {
-      this.avatar.setVelocityY(400);
+      this.avatar.setGravityY(1500);
+    } else {
+      this.avatar.setGravityY(500);
     }
 
+    //If moving, play walk animations, if not, don't
     if (
       this.avatar.body.velocity.x !== 0 ||
       this.avatar.body.velocity.y !== 0
@@ -227,13 +252,16 @@ class Play extends Phaser.Scene {
       this.avatar.play(`avatar-idle`, true);
     }
     //Shoots player bullet
-    if (this.cursors.shift.isDown) {
-      fireLaser();
-    }
+    //if (this.cursors.shift.isDown) {
+    //fireLaser();
+    //}
 
+    //Keeps health and discharge between their respective values, unless otherwise,
+    //like healing past a hundred (could be changed later)
     this.health = Phaser.Math.Clamp(this.health, 0, 100);
     this.discharge = Phaser.Math.Clamp(this.discharge, 0, 300);
 
+    //When you die, it will cue the Game Over scene
     if (this.health <= 0) {
       this.scene.start(`gameOver`);
     }

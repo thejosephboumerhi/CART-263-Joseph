@@ -1,3 +1,4 @@
+//When you die, it switches to this scene
 class GameOver extends Phaser.Scene {
   constructor() {
     super({
@@ -5,12 +6,14 @@ class GameOver extends Phaser.Scene {
     });
   }
 
+  //Basically the title example from the site
   create() {
-    this.add.image(400, 300, "");
+    this.add.image(400, 300, `mainBullet`);
 
-    this.add.text(80, 560, "Game Over" + game.config.gameTitle, {
-      font: "16px Courier",
-      fill: "#ffffff",
+    this.add.text(80, 560, `Game Over`, {
+      fontFamily: `Arial`,
+      fontSize: `50px`,
+      fill: `#ffffff`,
     });
   }
   update() {}

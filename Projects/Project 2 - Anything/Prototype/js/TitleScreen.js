@@ -1,3 +1,4 @@
+//This will be the title screen, it will be implemented in the final
 class TitleScreen extends Phaser.Scene {
   constructor() {
     super({
@@ -6,11 +7,14 @@ class TitleScreen extends Phaser.Scene {
   }
 
   create() {
-    this.add.image(400, 300, "");
+    this.add.image(400, 300, ``);
 
-    this.add.text(80, 560, "Press Enter To Play" + game.config.gameTitle, {
-      font: "16px Courier",
-      fill: "#ffffff",
+    this.add.image(400, 300, `mainBullet`);
+
+    this.add.text(80, 560, `Press [Space] to Start`, {
+      fontFamily: `Arial`,
+      fontSize: 50,
+      fill: `#ffffff`,
     });
   }
   update() {

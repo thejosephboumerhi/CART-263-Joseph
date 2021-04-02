@@ -2,7 +2,9 @@
 P2 - Anything: Part 1 - Prototype
 Joseph Boumerhi
 
-This is the prototype stage of my project.
+This is the prototype stage of my project, Disruptor Defector.
+It will be a shooter platformer, and it will revolve the use of a
+"discharge" mechanic
 */
 
 "use strict";

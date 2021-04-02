@@ -1,3 +1,4 @@
+//Preloads assets, a loading screen with some text and animation
 class Boot extends Phaser.Scene {
   constructor() {
     super({
@@ -44,6 +45,7 @@ class Boot extends Phaser.Scene {
     });
   }
 
+  //Creates the text and animation during loading screen (unsure)
   create() {
     let loadingStyle = {
       fontFamily: `serif`,
@@ -53,7 +55,7 @@ class Boot extends Phaser.Scene {
     let loadingDescription = `Loading >>>`;
     this.add.text(100, 100, loadingDescription, loadingStyle);
   }
-
+  //Runs the animation
   update() {
     this.add.image(200, 200, `loadingIcon`);
   }
