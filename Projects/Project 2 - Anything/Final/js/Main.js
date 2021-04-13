@@ -1,10 +1,13 @@
 /**
-P2 - Anything: Part 1 - Prototype
+P2 - Anything: Part 2 - Final
+Project Name: Disruptor Defector
 Joseph Boumerhi
 
-This is the prototype stage of my project, Disruptor Defector.
+This is the final version of my project, Disruptor Defector.
 It will be a shooter platformer, and it will revolve the use of a
 "discharge" mechanic
+
+This game has.
 */
 
 "use strict";
@@ -23,7 +26,7 @@ let config = {
   },
 
   //Scenes behaves like states
-  scene: [Boot, Play, GameOver],
+  scene: [Boot, TitleScreen, Play, GameOver, GameCompleted],
 };
 
 //Game Variable(s)

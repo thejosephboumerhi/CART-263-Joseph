@@ -7,6 +7,7 @@ class Boot extends Phaser.Scene {
   }
   preload() {
     //For assets
+
     this.load.spritesheet(
       `avatar`,
       `assets/images/PlayerSideShooterCharacter_IdleSheet.png`,
@@ -40,8 +41,11 @@ class Boot extends Phaser.Scene {
       { frameWidth: 45, frameHeight: 100, endFrame: 4 }
     );
 
+    this.load.image("gameTiles", "assets/tilesheets/DDTileset.png");
+    this.load.tilemapTiledJSON("lv1", "assets/tilemaps/level_one.json");
+
     this.load.on(`complete`, () => {
-      this.scene.start(`play`);
+      this.scene.start(`titleScreen`);
     });
   }
 

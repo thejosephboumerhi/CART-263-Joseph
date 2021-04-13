@@ -7,8 +7,6 @@ class TitleScreen extends Phaser.Scene {
   }
 
   create() {
-    this.add.image(400, 300, ``);
-
     this.add.image(400, 300, `mainBullet`);
 
     this.add.text(80, 560, `Press [Space] to Start`, {
@@ -16,8 +14,11 @@ class TitleScreen extends Phaser.Scene {
       fontSize: 50,
       fill: `#ffffff`,
     });
+    this.cursors = this.input.keyboard.createCursorKeys();
   }
   update() {
-    //if (this.cursor.enter.isDown) {
+    if (this.cursors.space.isDown) {
+      this.scene.start(`play`);
+    }
   }
 }

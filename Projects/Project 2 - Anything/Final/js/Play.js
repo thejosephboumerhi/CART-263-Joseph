@@ -22,6 +22,10 @@ class Play extends Phaser.Scene {
       color: `#ffa099`,
     };
 
+    const level1 = this.make.tilemap({ key: "lv1" });
+    const tileset = level1.addTilesetImage("DDTileset.png", "gameTiles");
+    const tileLayoutLv1 = level1.createLayer("Layout", tileset, 0, 200);
+
     this.physics.world.gravity.y = 1500;
 
     //Will have some text for inform
@@ -40,31 +44,7 @@ class Play extends Phaser.Scene {
     //Enables keyboard to be used
     this.cursors = this.input.keyboard.createCursorKeys();
 
-    //Tiles setting to make basic floor and ledge, will changed later using
     //Tiled, also have collision to be stood on
-    this.wall = this.physics.add.image(100, 600, `tile1`);
-    this.wall.body.allowGravity = false;
-    this.wall.setImmovable(true);
-    this.physics.add.collider(this.avatar, this.wall);
-    this.wall = this.physics.add.image(300, 600, `tile1`);
-    this.wall.body.allowGravity = false;
-    this.wall.setImmovable(true);
-    this.physics.add.collider(this.avatar, this.wall);
-    this.wall = this.physics.add.image(700, 600, `tile1`);
-    this.wall.body.allowGravity = false;
-    this.wall.setImmovable(true);
-    this.physics.add.collider(this.avatar, this.wall);
-    this.wall = this.physics.add.image(900, 600, `tile1`);
-    this.wall.body.allowGravity = false;
-    this.wall.setImmovable(true);
-    this.physics.add.collider(this.avatar, this.wall);
-    this.wall = this.physics.add.image(900, 400, `tile1`);
-    this.wall.body.allowGravity = false;
-    this.wall.setImmovable(true);
-    this.physics.add.collider(this.avatar, this.wall);
-    //Will test damage from a environmental source
-    this.hazard = this.physics.add.image(500, 600, `lavaHazard`);
-    this.hazard.body.allowGravity = false;
 
     //Health rapidly lowers while inside it
     this.physics.add.overlap(
