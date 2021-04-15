@@ -1,33 +1,35 @@
 { "compressionlevel":-1,
- "editorsettings":
-    {
-     "export":
-        {
-         "format":"json",
-         "target":"level_1..json"
-        }
-    },
- "height":5,
+ "height":6,
  "infinite":false,
  "layers":[
         {
-         "compression":"",
-         "data":"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAAAAAAAAAAAAAUAAAAAAAAABQAAAAAAAAAFAAAAAAAAAAEAAAABAAAACwAAAAEAAAALAAAAAQAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAACwAAAAsAAAALAAAACwAAAAsAAAALAAAACwAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-         "encoding":"base64",
-         "height":5,
-         "id":1,
-         "name":"Layout",
+         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         "height":6,
+         "id":5,
+         "name":"BackDrop",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":24,
+         "width":30,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "data":[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 5, 0, 5, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 23, 1, 23, 23, 1, 1, 23, 23, 23, 1, 1, 23, 23, 23, 23, 23, 23, 23, 23, 23, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+         "height":6,
+         "id":1,
+         "name":"PlatformLayout",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":30,
          "x":0,
          "y":0
         }, 
         {
          "draworder":"topdown",
-         "id":2,
-         "name":"Hazard",
+         "id":3,
+         "name":"Hazards",
          "objects":[],
          "opacity":1,
          "type":"objectgroup",
@@ -35,28 +37,28 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":3,
+ "nextlayerid":6,
  "nextobjectid":1,
  "orientation":"orthogonal",
- "renderorder":"right-down",
+ "renderorder":"left-down",
  "tiledversion":"1.5.0",
  "tileheight":32,
  "tilesets":[
         {
          "columns":6,
          "firstgid":1,
-         "image":"..\/..\/..\/..\/..\/..\/..\/Asperite Folder\/PNG\/DDTileset.png",
-         "imageheight":200,
-         "imagewidth":200,
+         "image":"..\/tilesheets\/DDTileset.png",
+         "imageheight":128,
+         "imagewidth":192,
          "margin":0,
          "name":"DDTileset",
          "spacing":0,
-         "tilecount":36,
+         "tilecount":24,
          "tileheight":32,
          "tilewidth":32
         }],
  "tilewidth":32,
  "type":"map",
  "version":1.5,
- "width":24
+ "width":30
 }

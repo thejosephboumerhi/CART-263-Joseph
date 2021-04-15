@@ -22,9 +22,19 @@ class Play extends Phaser.Scene {
       color: `#ffa099`,
     };
 
+    //This allow there to be a wider area/game world to move around in,
+    //with the addition of a camera to focus and follow you
+    //this.matter.world.setBounds(0,0,3200,600);
+    //this.camera.main.setBounds(0,0,3200,600);
+
+    //Maps made using Tiled, these are variables to set up the level, and
+    //allow collisions based off of groups
     const level1 = this.make.tilemap({ key: "lv1" });
-    const tileset = level1.addTilesetImage("DDTileset.png", "gameTiles");
-    const tileLayoutLv1 = level1.createLayer("Layout", tileset, 0, 200);
+    const tileset = level1.addTilesetImage("DDTileset", "gameTiles");
+    const tileLayoutLv1 = level1.createLayer("PlatformLayout", tileset, 0, 600);
+
+    //tileLayoutLv1.setCollisionByExclusion(-1, true);
+    //this.physics.add.collider(this.avatar, tileLayoutLv1);
 
     this.physics.world.gravity.y = 1500;
 
@@ -42,9 +52,8 @@ class Play extends Phaser.Scene {
     this.avatar.play(`avatar-idle`);
 
     //Enables keyboard to be used
+    this.cameras.main.startFollow(this.avatar, false, 0.2, 0.2);
     this.cursors = this.input.keyboard.createCursorKeys();
-
-    //Tiled, also have collision to be stood on
 
     //Health rapidly lowers while inside it
     this.physics.add.overlap(
