@@ -24,17 +24,12 @@ class Play extends Phaser.Scene {
 
     //This allow there to be a wider area/game world to move around in,
     //with the addition of a camera to focus and follow you
-    //this.matter.world.setBounds(0,0,3200,600);
-    //this.camera.main.setBounds(0,0,3200,600);
 
     //Maps made using Tiled, these are variables to set up the level, and
     //allow collisions based off of groups
     const level1 = this.make.tilemap({ key: "lv1" });
     const tileset = level1.addTilesetImage("DDTileset", "gameTiles");
     const tileLayoutLv1 = level1.createLayer("PlatformLayout", tileset, 0, 600);
-
-    //tileLayoutLv1.setCollisionByExclusion(-1, true);
-    //this.physics.add.collider(this.avatar, tileLayoutLv1);
 
     this.physics.world.gravity.y = 1500;
 
@@ -44,9 +39,13 @@ class Play extends Phaser.Scene {
     this.add.text(500, 25, protoRoomDescription, gameStyle1);
     this.add.text(500, 60, instruc, gameStyle2);
     //Create player avatar
-    this.avatar = this.physics.add.sprite(125, 125, `avatar`);
+    this.avatar = this.physics.add.sprite(200, 900, `avatar`);
     this.avatar.setGravityY(500);
 
+    level1.setBaseTileSize(128, 128);
+    level1.setLayerTileSize(128, 128);
+    tileLayoutLv1.setCollisionByExclusion(-1, true);
+    this.physics.add.collider(this.avatar, tileLayoutLv1);
     this.createAnimations();
 
     this.avatar.play(`avatar-idle`);
@@ -78,9 +77,6 @@ class Play extends Phaser.Scene {
       this
     );
 
-    //OoB world collision
-    this.avatar.setCollideWorldBounds(true);
-
     this.health = 100;
     this.healthDisplay = this.add.text(25, 50, `Health: ${this.health}`, {
       fontFamily: `Arial`,
@@ -102,38 +98,12 @@ class Play extends Phaser.Scene {
         color: `#fc0303`,
       }
     );
-    //this.createPlayerLaser();
-  }
 
-  //Code pasted from https://www.codecaptain.io/blog/game-development/shooting-
-  //bullets-using-phaser-groups/518, Samuel was trying help me set player bullets.
-  //Still need help setting it up
-  createPlayerLaser() {
-    // Create the group using the group factory
-    playerLaser = this.add.group();
-    // To move the sprites later on, we have to enable the body
-    playerLaser.enableBody = true;
-    // We're going to set the body type to the ARCADE physics, since we don't need any advanced physics
-    playerLaser.physicsBodyType = Phaser.Physics.ARCADE;
-    /*
-
-  		This will create 20 sprites and add it to the stage. They're inactive and invisible, but they're there for later use.
-  		We only have 20 laser bullets available, and will 'clean' and reset they're off the screen.
-  		This way we save on precious resources by not constantly adding & removing new sprites to the stage
-
-  	*/
-    playerLaser.createMultiple(20, "mainBullet");
-
-    /*
-
-  		Behind the scenes, this will call the following function on all playerLaser:
-  			- events.onOutOfBounds.add(resetLaser)
-  		Every sprite has an 'events' property, where you can add callbacks to specific events.
-  		Instead of looping over every sprite in the group manually, this function will do it for us.
-
-  	*/
-
-    // ...
+    laser = game.add.weapon(4, "mainBullet");
+    laser.fireRate = 250;
+    laser.bulletSpeed = 500;
+    laser.bulletLifespan = 1200;
+    laser.trackSprite(this.avatar, 0, 0, true);
   }
 
   collectItem(avatar, collectible) {
@@ -220,7 +190,7 @@ class Play extends Phaser.Scene {
     }
 
     //For vertical movement
-    if (this.cursors.space.isDown && this.avatar.body.touching.down) {
+    if (this.cursors.up.isDown && this.avatar.body.touching.down) {
       this.avatar.setVelocityY(-700 - this.discharge * 1.5);
     }
     //I could do something interesting with down and space,
