@@ -1,3 +1,4 @@
+let playerFacingLeft;
 //This will be the basic little room to showcase a prototype, will
 //likely turn into a tutorial level in the final
 class Play extends Phaser.Scene {
@@ -30,8 +31,6 @@ class Play extends Phaser.Scene {
     const level1 = this.make.tilemap({ key: "lv1" });
     const tileset = level1.addTilesetImage("DDTileset", "gameTiles");
     const tileLayoutLv1 = level1.createLayer("PlatformLayout", tileset, 0, 600);
-
-    this.physics.world.gravity.y = 1500;
 
     //Will have some text for inform
     let protoRoomDescription = `Disruptor Defector`;
@@ -99,11 +98,38 @@ class Play extends Phaser.Scene {
       }
     );
 
-    laser = game.add.weapon(4, "mainBullet");
-    laser.fireRate = 250;
-    laser.bulletSpeed = 500;
-    laser.bulletLifespan = 1200;
-    laser.trackSprite(this.avatar, 0, 0, true);
+    this.bullets = this.physics.add.group({
+      defaultKey: "mainBullet",
+    });
+
+    this.input.on("pointerdown", this.shoot, this);
+  }
+
+  shoot(pointer) {
+    var bullet = this.bullets.get(pointer.x, pointer.y);
+    if (bullet) {
+      //console.log(bullet)
+      this.physics.add.collider(bullet, this.wall, function () {
+        bullet.destroy();
+      });
+
+      bullet.x = this.avatar.x;
+      bullet.y = this.avatar.y;
+
+      bullet.setActive(true);
+      bullet.setVisible(true);
+      //  bullet
+      //console.log(bullet)
+      //console.log(this.avatar)
+
+      bullet.body.velocity.y = -600;
+
+      if (playerFacingLeft) {
+        bullet.body.velocity.x = -1200;
+      } else {
+        bullet.body.velocity.x = 1200;
+      }
+    }
   }
 
   collectItem(avatar, collectible) {
@@ -176,10 +202,12 @@ class Play extends Phaser.Scene {
     //Player Movement(will try to remap things for final)
     //For horizontal movement
     if (this.cursors.left.isDown) {
+      playerFacingLeft: true;
       this.avatar.setVelocityX(-275 - this.discharge * 1.5);
       this.discharge += 1;
       this.dischargeDisplay.setText(`Discharge:${this.discharge}`);
     } else if (this.cursors.right.isDown) {
+      playerFacingLeft: false;
       this.avatar.setVelocityX(275 + this.discharge * 1.5);
       this.discharge += 1;
       this.dischargeDisplay.setText(`Discharge:${this.discharge}`);
@@ -190,7 +218,7 @@ class Play extends Phaser.Scene {
     }
 
     //For vertical movement
-    if (this.cursors.up.isDown && this.avatar.body.touching.down) {
+    if (this.cursors.up.isDown && this.avatar.body.blocked.down) {
       this.avatar.setVelocityY(-700 - this.discharge * 1.5);
     }
     //I could do something interesting with down and space,
@@ -212,7 +240,7 @@ class Play extends Phaser.Scene {
     }
     //Shoots player bullet
     //if (this.cursors.shift.isDown) {
-    //fireLaser();
+    //blaster.fire();
     //}
 
     //Keeps health and discharge between their respective values, unless otherwise,
