@@ -14,10 +14,17 @@ $(`#instruction-dialog`).dialog({
   modal: true,
 });
 
+$(`.secret`).effect({
+  effect: `shake`,
+  duration: 500,
+  times: 10,
+  distance: 2,
+});
+
 $(`#solved-dialog`).dialog({
   autoOpen: false,
   buttons: {
-    "I know.": function () {
+    "And that's good.": function () {
       $(this).dialog(`close`);
     },
   },
@@ -35,7 +42,7 @@ $(`#answer`).droppable({
     ui.draggable.draggable(`disable`);
     ui.draggable.removeClass(`found`);
     //Check if got
-    if ($(this).text() === `Theremin`) {
+    if ($(this).text() === `shit`) {
       $(`#solved-dialog`).dialog(`open`);
     }
   },
