@@ -1,4 +1,4 @@
-let playerFacingLeft;
+let playerFacingLeft = false;
 //This will be the basic little room to showcase a prototype, will
 //likely turn into a tutorial level in the final
 class Play extends Phaser.Scene {
@@ -30,7 +30,12 @@ class Play extends Phaser.Scene {
     //allow collisions based off of groups
     const level1 = this.make.tilemap({ key: "lv1" });
     const tileset = level1.addTilesetImage("DDTileset", "gameTiles");
-    const tileLayoutLv1 = level1.createLayer("PlatformLayout", tileset, 0, 600);
+    const tileLayoutLv1 = level1.createLayer(
+      "PlatformLayoutLv1",
+      tileset,
+      0,
+      600
+    );
 
     //Will have some text for inform
     let protoRoomDescription = `Disruptor Defector`;
@@ -45,6 +50,7 @@ class Play extends Phaser.Scene {
     level1.setLayerTileSize(128, 128);
     tileLayoutLv1.setCollisionByExclusion(-1, true);
     this.physics.add.collider(this.avatar, tileLayoutLv1);
+
     this.createAnimations();
 
     this.avatar.play(`avatar-idle`);
@@ -99,35 +105,51 @@ class Play extends Phaser.Scene {
     );
 
     this.bullets = this.physics.add.group({
-      defaultKey: "mainBullet",
+      defaultKey: "avatarBullet",
     });
 
     this.input.on("pointerdown", this.shoot, this);
+
+    this.quadDroneEnemy = this.physics.add.group({
+      defaultKey: "QuadDrone",
+    });
+
+    //this.shiftingPlat = this.physics.add.group({
+    //defaultKey: "QuadDrone",
+    //});
+
+    //this.fragilePlat = this.physics.add.group({
+    //defaultKey: "QuadDrone",
+    //});
   }
 
+  //enemyGrouper() {}
+
+  //shoot(this.avatar){}
+
   shoot(pointer) {
-    var bullet = this.bullets.get(pointer.x, pointer.y);
-    if (bullet) {
-      //console.log(bullet)
-      this.physics.add.collider(bullet, this.wall, function () {
-        bullet.destroy();
+    var playerBullet = this.bullets.get(pointer.x, pointer.y);
+    if (playerBullet) {
+      //console.log(playerBullet)
+      this.physics.add.collider(playerBullet, `PlatformLayout`, function () {
+        playerBullet.destroy();
       });
 
-      bullet.x = this.avatar.x;
-      bullet.y = this.avatar.y;
+      playerBullet.x = this.avatar.x;
+      playerBullet.y = this.avatar.y;
 
-      bullet.setActive(true);
-      bullet.setVisible(true);
-      //  bullet
-      //console.log(bullet)
+      playerBullet.setActive(true);
+      playerBullet.setVisible(true);
+      //  playerBullet
+      //console.log(playerBullet)
       //console.log(this.avatar)
 
-      bullet.body.velocity.y = -600;
+      playerBullet.body.velocity.y = -600;
 
-      if (playerFacingLeft) {
-        bullet.body.velocity.x = -1200;
+      if (this.playerFacingLeft) {
+        playerBullet.body.velocity.x = -1200;
       } else {
-        bullet.body.velocity.x = 1200;
+        playerBullet.body.velocity.x = 1200;
       }
     }
   }
@@ -147,10 +169,19 @@ class Play extends Phaser.Scene {
   //be edited, I think
   createAnimations() {
     this.anims.create({
-      key: `avatar-moving`,
+      key: `avatar-moving-left`,
       frames: this.anims.generateFrameNumbers(`avatar`, {
-        start: 0,
-        end: 3,
+        start: 2,
+        end: 0,
+      }),
+      frameRate: 30,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: `avatar-moving-right`,
+      frames: this.anims.generateFrameNumbers(`avatar`, {
+        start: 3,
+        end: 5,
       }),
       frameRate: 30,
       repeat: -1,
@@ -158,6 +189,15 @@ class Play extends Phaser.Scene {
 
     this.anims.create({
       key: `avatar-idle`,
+      frames: this.anims.generateFrameNumbers(`avatar`, {
+        start: 0,
+        end: 0,
+      }),
+      frameRate: 30,
+      repeat: 0,
+    });
+    this.anims.create({
+      key: `avatar-idle-right`,
       frames: this.anims.generateFrameNumbers(`avatar`, {
         start: 0,
         end: 0,
@@ -203,11 +243,13 @@ class Play extends Phaser.Scene {
     //For horizontal movement
     if (this.cursors.left.isDown) {
       playerFacingLeft: true;
+      this.avatar.play(`avatar-moving-left`, true);
       this.avatar.setVelocityX(-275 - this.discharge * 1.5);
       this.discharge += 1;
       this.dischargeDisplay.setText(`Discharge:${this.discharge}`);
     } else if (this.cursors.right.isDown) {
       playerFacingLeft: false;
+      this.avatar.play(`avatar-moving-right`, true);
       this.avatar.setVelocityX(275 + this.discharge * 1.5);
       this.discharge += 1;
       this.dischargeDisplay.setText(`Discharge:${this.discharge}`);
@@ -234,8 +276,6 @@ class Play extends Phaser.Scene {
       this.avatar.body.velocity.x !== 0 ||
       this.avatar.body.velocity.y !== 0
     ) {
-      this.avatar.play(`avatar-moving`, true);
-    } else {
       this.avatar.play(`avatar-idle`, true);
     }
     //Shoots player bullet

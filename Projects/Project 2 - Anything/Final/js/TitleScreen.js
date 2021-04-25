@@ -7,7 +7,7 @@ class TitleScreen extends Phaser.Scene {
   }
 
   create() {
-    this.add.image(400, 300, `mainBullet`);
+    this.add.image(900, 300, `titleSplash`);
 
     this.add.text(80, 560, `Press [Space] to Start`, {
       fontFamily: `Arial`,

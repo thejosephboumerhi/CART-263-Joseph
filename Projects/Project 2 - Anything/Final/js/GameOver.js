@@ -8,7 +8,7 @@ class GameOver extends Phaser.Scene {
 
   //Basically the title example from the site
   create() {
-    this.add.image(400, 300, `mainBullet`);
+    this.add.image(400, 300, `gameOverSplash`);
 
     this.add.text(80, 560, `Game Over`, {
       fontFamily: `Arial`,
