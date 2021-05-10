@@ -26,6 +26,24 @@ class Play extends Phaser.Scene {
     //This allow there to be a wider area/game world to move around in,
     //with the addition of a camera to focus and follow you
 
+    //const level2 = this.make.tilemap({ key: "lv2" });
+    //const tileset = level2.addTilesetImage("DDTileset", "gameTiles");
+    //const tileLayoutLv2 = level2.createLayer(
+    //"PlatformLayoutLv2",
+    //tileset,
+    //0,
+    //600
+    //);
+
+    //const level3 = this.make.tilemap({ key: "lv3" });
+    //const tileset = level3.addTilesetImage("DDTileset", "gameTiles");
+    //const tileLayoutLv3 = level3.createLayer(
+    //"PlatformLayoutLv3",
+    //tileset,
+    //0,
+    //600
+    //);
+
     //Maps made using Tiled, these are variables to set up the level, and
     //allow collisions based off of groups
     const level1 = this.make.tilemap({ key: "lv1" });
@@ -38,22 +56,22 @@ class Play extends Phaser.Scene {
     );
 
     //Will have some text for inform
-    let protoRoomDescription = `Disruptor Defector`;
     let instruc = `Left, Right to move, Down to fast-fall, Space to Jump`;
-    this.add.text(500, 25, protoRoomDescription, gameStyle1);
-    this.add.text(500, 60, instruc, gameStyle2);
+    this.add.text(500, 600, instruc, gameStyle2);
     //Create player avatar
     this.avatar = this.physics.add.sprite(200, 900, `avatar`);
     this.avatar.setGravityY(500);
 
-    level1.setBaseTileSize(128, 128);
-    level1.setLayerTileSize(128, 128);
+    level1.setBaseTileSize(160, 160);
+    level1.setLayerTileSize(160, 160);
     tileLayoutLv1.setCollisionByExclusion(-1, true);
+    //tileLayoutLv1.setCollisionByProperty({ collides: true });
     this.physics.add.collider(this.avatar, tileLayoutLv1);
 
     this.createAnimations();
 
     this.avatar.play(`avatar-idle`);
+    this.avatar.play(`avatar-moving`);
 
     //Enables keyboard to be used
     this.cameras.main.startFollow(this.avatar, false, 0.2, 0.2);
@@ -92,6 +110,7 @@ class Play extends Phaser.Scene {
     //This will be the mechanic that the game will revolve around,
     //essentially, the more you move, the more you get rewarded, it will
     //buff you in different ways, ex: more move speed, and bigger bullets
+
     this.discharge = 0;
     this.dischargeDisplay = this.add.text(
       25,
@@ -104,17 +123,47 @@ class Play extends Phaser.Scene {
       }
     );
 
+    //this.healthDisplay.startFollow(this.avatar, false, 0.2, 0.2);
+    //this.dischargeDisplay.startFollow(this.avatar, false, 0.2, 0.2);
+
     this.bullets = this.physics.add.group({
       defaultKey: "avatarBullet",
     });
 
     this.input.on("pointerdown", this.shoot, this);
 
+    //Hovering Enemy that shoots scatter shots
     this.quadDroneEnemy = this.physics.add.group({
       defaultKey: "QuadDrone",
     });
 
+    //Immovable Enemy that sprays bullets, have to kill to progress through
+    //choke point
+    this.turretEnemy = this.physics.add.group({
+      defaultKey: "TurretEnemy",
+      immovable: true,
+    });
+
+    //Melee enemy that has a hefty amount of health, could protect its fellow
+    //enemies
+    this.tankerEnemy = this.physics.add.group({
+      defaultKey: "TankerEnemy",
+    });
+
+    this.lavaHazards = this.physics.add.group({
+      defaultKey: `lavaHazard`,
+      immovable: true,
+      quantity: 10,
+    });
+
+    //this.lavaHazards;
+    //
+
     //this.shiftingPlat = this.physics.add.group({
+    //defaultKey: "QuadDrone",
+    //});
+
+    //this.fragilePlat = this.physics.add.group({
     //defaultKey: "QuadDrone",
     //});
 
@@ -124,8 +173,6 @@ class Play extends Phaser.Scene {
   }
 
   //enemyGrouper() {}
-
-  //shoot(this.avatar){}
 
   shoot(pointer) {
     var playerBullet = this.bullets.get(pointer.x, pointer.y);
@@ -143,7 +190,7 @@ class Play extends Phaser.Scene {
       //  playerBullet
       //console.log(playerBullet)
       //console.log(this.avatar)
-
+      //playerBullet.size = 50 +  this.discharge;
       playerBullet.body.velocity.y = -600;
 
       if (this.playerFacingLeft) {
@@ -169,40 +216,22 @@ class Play extends Phaser.Scene {
   //be edited, I think
   createAnimations() {
     this.anims.create({
-      key: `avatar-moving-left`,
-      frames: this.anims.generateFrameNumbers(`avatar`, {
-        start: 2,
-        end: 0,
-      }),
-      frameRate: 30,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: `avatar-moving-right`,
+      key: `avatar-moving`,
       frames: this.anims.generateFrameNumbers(`avatar`, {
         start: 3,
-        end: 5,
+        end: 6,
       }),
-      frameRate: 30,
+      frameRate: 15,
       repeat: -1,
     });
 
     this.anims.create({
       key: `avatar-idle`,
       frames: this.anims.generateFrameNumbers(`avatar`, {
-        start: 0,
-        end: 0,
+        start: 3,
+        end: 3,
       }),
-      frameRate: 30,
-      repeat: 0,
-    });
-    this.anims.create({
-      key: `avatar-idle-right`,
-      frames: this.anims.generateFrameNumbers(`avatar`, {
-        start: 0,
-        end: 0,
-      }),
-      frameRate: 30,
+      frameRate: 15,
       repeat: 0,
     });
 
@@ -243,14 +272,16 @@ class Play extends Phaser.Scene {
     //For horizontal movement
     if (this.cursors.left.isDown) {
       playerFacingLeft: true;
-      this.avatar.play(`avatar-moving-left`, true);
+      this.avatar.flipX = false;
       this.avatar.setVelocityX(-275 - this.discharge * 1.5);
+      this.avatar.anims.play(`avatar-moving`, true);
       this.discharge += 1;
       this.dischargeDisplay.setText(`Discharge:${this.discharge}`);
     } else if (this.cursors.right.isDown) {
+      this.avatar.flipX = true;
       playerFacingLeft: false;
-      this.avatar.play(`avatar-moving-right`, true);
       this.avatar.setVelocityX(275 + this.discharge * 1.5);
+      this.avatar.anims.play(`avatar-moving`, true);
       this.discharge += 1;
       this.dischargeDisplay.setText(`Discharge:${this.discharge}`);
     } else {
@@ -265,8 +296,8 @@ class Play extends Phaser.Scene {
     }
     //I could do something interesting with down and space,
     //like doing a jump and forcing yourself down faster
-    else if (this.cursors.down.isDown) {
-      this.avatar.setGravityY(1500);
+    if (this.cursors.down.isDown && !this.avatar.body.blocked.down) {
+      this.avatar.setGravityY(800);
     } else {
       this.avatar.setGravityY(500);
     }
@@ -276,7 +307,7 @@ class Play extends Phaser.Scene {
       this.avatar.body.velocity.x !== 0 ||
       this.avatar.body.velocity.y !== 0
     ) {
-      this.avatar.play(`avatar-idle`, true);
+      this.avatar.play(`avatar-moving`, true);
     }
     //Shoots player bullet
     //if (this.cursors.shift.isDown) {
@@ -286,7 +317,13 @@ class Play extends Phaser.Scene {
     //Keeps health and discharge between their respective values, unless otherwise,
     //like healing past a hundred (could be changed later)
     this.health = Phaser.Math.Clamp(this.health, 0, 100);
-    this.discharge = Phaser.Math.Clamp(this.discharge, 0, 300);
+    this.discharge = Phaser.Math.Clamp(this.discharge, 0, 250);
+
+    //for()
+
+    //for()
+
+    //for()
 
     //When you die, it will cue the Game Over scene
     if (this.health <= 0) {

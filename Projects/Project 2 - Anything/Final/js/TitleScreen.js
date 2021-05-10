@@ -7,7 +7,13 @@ class TitleScreen extends Phaser.Scene {
   }
 
   create() {
-    this.add.image(900, 300, `titleSplash`);
+    this.add.image(600, 350, `titleSplash`);
+
+    this.add.text(80, 100, `Disruptor Defector`, {
+      fontFamily: `Arial`,
+      fontSize: 50,
+      fill: `#fc0303`,
+    });
 
     this.add.text(80, 560, `Press [Space] to Start`, {
       fontFamily: `Arial`,

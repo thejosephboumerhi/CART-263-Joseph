@@ -12,21 +12,30 @@ class Boot extends Phaser.Scene {
     this.load.spritesheet(
       `avatar`,
       `assets/images/PlayerSideShooterCharacter_IdleSheet.png`,
-      { frameWidth: 50, frameHeight: 115, endFrame: 5 }
+      { frameWidth: 39, frameHeight: 107, endFrame: 6 }
     );
 
     //The enemy sprite(s)
+    //Deadly Turret
+    this.load.spritesheet(
+      `TurretEnemy`,
+      `assets/images/EnemyTurret-Sheet.png`,
+      { frameWidth: 100, frameHeight: 110, endFrame: 4 }
+    );
+    //Deadly Aerial Drone
     this.load.spritesheet(
       `QuadDrone`,
       `assets/images/QuadShotDrone-Sheet.png`,
-      { frameWidth: 100, frameHeight: 110, endFrame: 1 }
+      { frameWidth: 100, frameHeight: 110, endFrame: 2 }
     );
+    //Sluggish Tanker
+    this.load.image(`TankerEnemy`, `assets/images/TankerEnemy.png`);
 
     //Neat little charging battery during loading screen
     this.load.spritesheet(
       `loadingIcon`,
       `assets/images/BatteryLoadingSheet.png`,
-      { frameWidth: 200, frameHeight: 200, endFrame: 5 }
+      { frameWidth: 200, frameHeight: 200, endFrame: 6 }
     );
 
     //Image (might be unnecessary)
@@ -63,6 +72,8 @@ class Boot extends Phaser.Scene {
     //Assets for projectiles
     this.load.image(`avatarBullet`, `assets/images/Player-Bullet.png`);
     this.load.image(`enemyBullet`, `assets/images/Enemy-Bullet.png`);
+
+    //Image for healing item
     this.load.spritesheet(
       `healBattery`,
       `assets/images/HealingBatterySheet.png`,
@@ -73,6 +84,7 @@ class Boot extends Phaser.Scene {
     this.load.image("gameTiles", "assets/tilesheets/DDTileset.png");
     this.load.tilemapTiledJSON("lv1", "assets/tilemaps/level_one.json");
     this.load.tilemapTiledJSON("lv2", "assets/tilemaps/level_two.json");
+    this.load.tilemapTiledJSON("lv3", "assets/tilemaps/level_three.json");
 
     //Audio, sounds for player, enemies, and misc.
     this.load.audio(`pHeal`, `assets/sounds/playerHealSound.wav`);
@@ -81,6 +93,7 @@ class Boot extends Phaser.Scene {
     this.load.audio(`pShot`, `assets/sounds/playerShotSound.wav`);
     this.load.audio(`pJump`, `assets/sounds/playerJumpSound.wav`);
     this.load.audio(`eShot`, `assets/sounds/enemyShotSound.wav`);
+    this.load.audio(`eDeath`, `assets/sounds/enemyDeathSound.wav`);
     this.load.audio(`gameOverBlip`, `assets/sounds/gameOverSound.wav`);
 
     //The title screen on boot up
